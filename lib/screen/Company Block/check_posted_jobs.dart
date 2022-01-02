@@ -19,7 +19,7 @@ class _CheckPostedJobsState extends State<CheckPostedJobs> {
   @override
   void initState() {    
     super.initState();
-    getStatus();
+    // getStatus();
   }
 
   getStatus()async{
@@ -99,7 +99,7 @@ class _CheckPostedJobsState extends State<CheckPostedJobs> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Active",style:TextStyle(color: Colors.white),),
-                  status.get("status") != "active" ? Container() :  Container(
+                  Container(
                       margin: EdgeInsets.only(left: 10),
                       height: 10,width: 10,decoration: BoxDecoration(borderRadius: BorderRadius.circular(50),color: Colors.green[400]),),
                   ],
@@ -118,7 +118,7 @@ class _CheckPostedJobsState extends State<CheckPostedJobs> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Pause",style:TextStyle(color: Colors.white),),
-                    status.get("status") != "pause" ? Container() :  Container(
+                      Container(
                       margin: EdgeInsets.only(left: 10),
                       height: 10,width: 10,decoration: BoxDecoration(borderRadius: BorderRadius.circular(50),color: Colors.green[400]),)
                   ],

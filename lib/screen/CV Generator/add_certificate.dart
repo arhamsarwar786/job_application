@@ -1,5 +1,4 @@
-import 'widgets/button.dart';
-import 'widgets/custom_textfield.dart';
+import 'package:firebase_app/screen/CV%20Generator/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
 class AddCertificate extends StatelessWidget {
@@ -14,21 +13,15 @@ class AddCertificate extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Add",
-            ),
-            Text(
-              "Certificate",
-              style: TextStyle(color: Colors.blue),
-            ),
-          ],
+        backgroundColor: Colors.blue[900],
+        title: Text(
+          "AddCertificate",
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[900],
         child: Icon(Icons.save),
         onPressed: () {
           addcertificate.add({
@@ -66,8 +59,6 @@ class AddCertificate extends StatelessWidget {
               iconText: Icon(Icons.person_outline),
               ratio: 1.0,
             ),
-            SizedBox(height: 10.0),
-            Button(btnText: "Save Changes"),
             SizedBox(height: 10.0),
           ],
         ),

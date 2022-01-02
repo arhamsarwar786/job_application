@@ -1,4 +1,4 @@
-import 'widgets/custom_textfield.dart';
+import 'package:firebase_app/screen/CV%20Generator/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
 class AddSkills extends StatelessWidget {
@@ -12,21 +12,15 @@ class AddSkills extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Add",
-            ),
-            Text(
-              "Skills",
-              style: TextStyle(color: Colors.blue),
-            ),
-          ],
+        backgroundColor: Colors.blue[900],
+        title: Text(
+          "AddSkills",
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[900],
         child: Icon(Icons.save),
         onPressed: () {
           addskills.add({

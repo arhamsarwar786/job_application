@@ -1,4 +1,4 @@
-import 'widgets/custom_textfield.dart';
+import 'package:firebase_app/screen/CV%20Generator/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
 class AddEducation extends StatelessWidget {
@@ -19,22 +19,16 @@ class AddEducation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue[900],
         elevation: 1.0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Add",
-            ),
-            Text(
-              "Education",
-              style: TextStyle(color: Colors.blue),
-            ),
-          ],
+        title: Text(
+          "AddEducation",
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[900],
         child: Icon(Icons.save),
         onPressed: () {
           addEducation.add({
@@ -84,21 +78,21 @@ class AddEducation extends StatelessWidget {
               ratio: 1.0,
             ),
             SizedBox(height: 10.0),
-            CustomTextField(
-              controller: grde,
-              labelText: "Grade",
-              hintText: "",
-              iconText: Icon(Icons.note_add),
-              ratio: 1.0,
-            ),
+            // CustomTextField(
+            //   controller: grde,
+            //   labelText: "Grade",
+            //   hintText: "",
+            //   iconText: Icon(Icons.note_add),
+            //   ratio: 1.0,
+            // ),
             SizedBox(height: 10.0),
-            CustomTextField(
-              controller: adtion,
-              labelText: "Additional Notes",
-              hintText: "",
-              iconText: Icon(Icons.note_add),
-              ratio: 1.0,
-            ),
+            // CustomTextField(
+            //   controller: adtion,
+            //   labelText: "Additional Notes",
+            //   hintText: "",
+            //   iconText: Icon(Icons.note_add),
+            //   ratio: 1.0,
+            // ),
             SizedBox(height: 10.0),
           ],
         ),

@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/home_screen/jobscreen.dart';
 import 'package:firebase_app/util/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+
 
 import 'add_certificate.dart';
 import 'add_edcuation.dart';
@@ -51,11 +53,9 @@ class _FormDataState extends State<FormData> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Form(
-              // key: _formKey,
+              key: _formKey,
               child: Column(
                 children: [
-
-
                   Card(
                     elevation: 5,
                     shape: RoundedRectangleBorder(
@@ -69,7 +69,7 @@ class _FormDataState extends State<FormData> {
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
+                              children: [
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -77,7 +77,7 @@ class _FormDataState extends State<FormData> {
                                   padding: EdgeInsets.all(5.0),
                                   child: Text(
                                     "Welcome to Indeed for Employers!",
-                                    style: TextStyle(
+                                    style: GoogleFonts.josefinSans(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
@@ -85,25 +85,11 @@ class _FormDataState extends State<FormData> {
                                 ),
                               ],
                             ),
-                            // Column(
-                            //   mainAxisAlignment: MainAxisAlignment.start,
-                            //   children: [
-                            //     Container(
-                            //       decoration: const BoxDecoration(
-                            //           // color: Colors.amber,
-                            //           image: DecorationImage(
-                            //         image: AssetImage("Assets/employee.jpg"),
-                            //       )),
-                            //     ),
-                            //   ],
-                            // ),
                           ],
                         ),
                       ),
                     ),
                   ),
-
-                  //  list form code
                   SizedBox(
                     height: 20,
                   ),
@@ -130,44 +116,45 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 15,
                             ),
-
-                                              // Image Picker
+                          
+  // Image Picker
                             Container(
                               alignment: Alignment.center,
-                              
                               child: Container(
-                                
                                 height: 150.0,
                                 width: 150.0,
                                 decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.blue.shade900, width: 1.0),
+                                    border: Border.all(
+                                        color: Colors.blue.shade900,
+                                        width: 1.0),
                                     color: Colors.black38,
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
-                                        image: FileImage(File("$imagePickedPath")),
-                                        fit: BoxFit.cover)
-                                    ),
+                                        image:
+                                            FileImage(File("$imagePickedPath")),
+                                        fit: BoxFit.cover)),
                                 // child: imagePickedPath == null
                                 //     ? CircularProgressIndicator(
                                 //         color: Colors.red,
                                 //       )
-                                //     : 
-                              child : Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: InkWell(
-                                          onTap: () {
-                                            showMyDialogue(context);
-                                          },
-                                          child: ImageIcon(
-                                            AssetImage(
-                                                "assets/camera.png"),
-                                            color: Colors.blue.shade900,
-                                            size: 40.0,
-                                          ),
-                                        ),
-                                      ),
+                                //     :
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: InkWell(
+                                    onTap: () {
+                                      showMyDialogue(context);
+                                    },
+                                    child: ImageIcon(
+                                      AssetImage("assets/camera.png"),
+                                      color: Colors.blue.shade900,
+                                      size: 40.0,
+                                    ),
+                                  ),
+                                ),
                               ),
+                            ),
+                            SizedBox(
+                              height: 15,
                             ),
                             const Text(
                               "Your Name",
@@ -187,6 +174,7 @@ class _FormDataState extends State<FormData> {
                                 cursorColor: Colors.black,
                                 textAlign: TextAlign.left,
                                 decoration: InputDecoration(
+                                  hintText: 'enter your name',
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -206,7 +194,7 @@ class _FormDataState extends State<FormData> {
                             ),
                             SizedBox(
                               height: 10,
-                            ),                            
+                            ),
                             const Text(
                               "Designation ",
                               style: TextStyle(
@@ -220,12 +208,13 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 40,
                               width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextField(
+                              child: TextFormField(
                                 controller: designation,
                                 keyboardType: TextInputType.name,
                                 cursorColor: Colors.black,
                                 textAlign: TextAlign.left,
                                 decoration: InputDecoration(
+                                  hintText: 'enter your designation',
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -236,9 +225,14 @@ class _FormDataState extends State<FormData> {
                                   ),
                                   // hintText: "Enter Phone Number",
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
-
                             SizedBox(
                               height: 10,
                             ),
@@ -255,12 +249,13 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 40,
                               width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextField(
+                              child: TextFormField(
                                 controller: residing,
                                 keyboardType: TextInputType.name,
                                 cursorColor: Colors.black,
                                 textAlign: TextAlign.left,
                                 decoration: InputDecoration(
+                                  hintText: 'enter your residing',
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -271,6 +266,12 @@ class _FormDataState extends State<FormData> {
                                   ),
                                   // hintText: "Enter Phone Number",
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                             SizedBox(
@@ -289,12 +290,13 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 40,
                               width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextField(
+                              child: TextFormField(
                                 controller: email,
                                 keyboardType: TextInputType.name,
                                 cursorColor: Colors.black,
                                 textAlign: TextAlign.left,
                                 decoration: InputDecoration(
+                                  hintText: 'enter your email',
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -305,9 +307,14 @@ class _FormDataState extends State<FormData> {
                                   ),
                                   // hintText: "Enter Phone Number",
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
-
                             SizedBox(
                               height: 10,
                             ),
@@ -324,12 +331,13 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 40,
                               width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextField(
+                              child: TextFormField(
                                 controller: phoneno,
                                 keyboardType: TextInputType.number,
                                 cursorColor: Colors.black,
                                 textAlign: TextAlign.left,
                                 decoration: InputDecoration(
+                                  hintText: 'enter your number',
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -338,8 +346,13 @@ class _FormDataState extends State<FormData> {
                                     borderSide: BorderSide(
                                         color: Colors.black, width: 1.0),
                                   ),
-                                  // hintText: "Enter Phone Number",
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter number';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                             SizedBox(
@@ -358,12 +371,13 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 40,
                               width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextField(
+                              child: TextFormField(
                                 controller: linkedin,
                                 keyboardType: TextInputType.name,
                                 cursorColor: Colors.black,
                                 textAlign: TextAlign.left,
                                 decoration: InputDecoration(
+                                  hintText: 'enter your account link',
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -372,8 +386,13 @@ class _FormDataState extends State<FormData> {
                                     borderSide: BorderSide(
                                         color: Colors.black, width: 1.0),
                                   ),
-                                  // hintText: "Enter Phone Number",
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                             SizedBox(
@@ -392,7 +411,6 @@ class _FormDataState extends State<FormData> {
                             Row(
                               children: [
                                 SizedBox(
-                                  // height: 180,
                                   width:
                                       MediaQuery.of(context).size.width / 1.4,
                                   child: Column(
@@ -401,23 +419,44 @@ class _FormDataState extends State<FormData> {
                                       for (int i = 0; i < addEdtion.length; i++)
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
-                                          child: Container(
-                                            // height: 30,
-                                            width: 300,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              border: Border.all(
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                // decoration: BoxDecoration(
+                                                //   color: Colors.grey.shade300,
+                                                //   border: Border.all(
+                                                //       color: Colors.grey.shade300,
+                                                //       width:
+                                                //           3.0), // Set border width
+                                                //   borderRadius: BorderRadius.all(
+                                                //       Radius.circular(
+                                                //           10.0)), // Set rounded corner radius
+                                                // ),
+                                                child: Center(
+                                                  child: Text(" ${i + 1} -"),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 150,
+                                                decoration: BoxDecoration(
                                                   color: Colors.grey.shade300,
-                                                  width:
-                                                      3.0), // Set border width
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      10.0)), // Set rounded corner radius
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                  " ${i + 1} -  ${addEdtion[i]['school']}      \t     ${addEdtion[i]['date']}"),
-                                            ),
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade300,
+                                                      width:
+                                                          3.0), // Set border width
+                                                  borderRadius: BorderRadius
+                                                      .all(Radius.circular(
+                                                          10.0)), // Set rounded corner radius
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                      "${addEdtion[i]['school']}      ${addEdtion[i]['date']}"),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                     ],
@@ -495,22 +534,30 @@ class _FormDataState extends State<FormData> {
                                           i++)
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
-                                          child: Container(
-                                            width: 300,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              border: Border.all(
+                                          child: Row(
+                                            children: [
+                                              Center(
+                                                child: Text(" ${i + 1} - "),
+                                              ),
+                                              Container(
+                                                width: 150,
+                                                decoration: BoxDecoration(
                                                   color: Colors.grey.shade300,
-                                                  width:
-                                                      3.0), // Set border width
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      10.0)), // Set rounded corner radius
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                  " ${i + 1} -  ${addcertificate[i]['name']}      \t     ${addcertificate[i]['date']}"),
-                                            ),
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade300,
+                                                      width:
+                                                          3.0), // Set border width
+                                                  borderRadius: BorderRadius
+                                                      .all(Radius.circular(
+                                                          10.0)), // Set rounded corner radius
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                      "${addcertificate[i]['name']}      ${addcertificate[i]['date']}"),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                     ],
@@ -592,22 +639,30 @@ class _FormDataState extends State<FormData> {
                                           i++)
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
-                                          child: Container(
-                                            width: 300,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              border: Border.all(
+                                          child: Row(
+                                            children: [
+                                              Center(
+                                                child: Text(" ${i + 1} -"),
+                                              ),
+                                              Container(
+                                                width: 130,
+                                                decoration: BoxDecoration(
                                                   color: Colors.grey.shade300,
-                                                  width:
-                                                      3.0), // Set border width
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      10.0)), // Set rounded corner radius
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                  " ${i + 1} -  ${addExperince[i]['campany']}      \t     ${addExperince[i]['job']} \n ${addExperince[i]['date']}"),
-                                            ),
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade300,
+                                                      width:
+                                                          3.0), // Set border width
+                                                  borderRadius: BorderRadius
+                                                      .all(Radius.circular(
+                                                          10.0)), // Set rounded corner radius
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                      "${addExperince[i]['campany']}   ${addExperince[i]['job']} \n ${addExperince[i]['date']}"),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                     ],
@@ -687,25 +742,34 @@ class _FormDataState extends State<FormData> {
                                       for (int i = 0;
                                           i < addProject.length;
                                           i++)
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Container(
-                                            width: 300,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              border: Border.all(
+                                        Row(
+                                          children: [
+                                            Center(
+                                              child: Text(" ${i + 1} -"),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: Container(
+                                                width: 160,
+                                                decoration: BoxDecoration(
                                                   color: Colors.grey.shade300,
-                                                  width:
-                                                      3.0), // Set border width
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      10.0)), // Set rounded corner radius
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade300,
+                                                      width:
+                                                          3.0), // Set border width
+                                                  borderRadius: BorderRadius
+                                                      .all(Radius.circular(
+                                                          10.0)), // Set rounded corner radius
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                      "${addProject[i]['name']}   ${addProject[i]['lang']} \n ${addProject[i]['date']}"),
+                                                ),
+                                              ),
                                             ),
-                                            child: Center(
-                                              child: Text(
-                                                  " ${i + 1} -  ${addProject[i]['name']}      \t     ${addProject[i]['lang']} \n ${addProject[i]['date']}"),
-                                            ),
-                                          ),
+                                          ],
                                         ),
                                     ],
                                   ),
@@ -784,22 +848,30 @@ class _FormDataState extends State<FormData> {
                                       for (int i = 0; i < addskills.length; i++)
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
-                                          child: Container(
-                                            width: 300,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              border: Border.all(
+                                          child: Row(
+                                            children: [
+                                              Center(
+                                                child: Text(" ${i + 1} - "),
+                                              ),
+                                              Container(
+                                                width: 160,
+                                                decoration: BoxDecoration(
                                                   color: Colors.grey.shade300,
-                                                  width:
-                                                      3.0), // Set border width
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      10.0)), // Set rounded corner radius
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                  " ${i + 1} -  ${addskills[i]['lang']} "),
-                                            ),
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade300,
+                                                      width:
+                                                          3.0), // Set border width
+                                                  borderRadius: BorderRadius
+                                                      .all(Radius.circular(
+                                                          10.0)), // Set rounded corner radius
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                      "${addskills[i]['lang']} "),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                     ],
@@ -871,13 +943,14 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 80,
                               width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextField(
+                              child: TextFormField(
                                 maxLines: 3,
                                 controller: personal,
                                 keyboardType: TextInputType.name,
                                 cursorColor: Colors.black,
                                 textAlign: TextAlign.left,
                                 decoration: InputDecoration(
+                                  hintText: 'enter personal informations',
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -888,6 +961,12 @@ class _FormDataState extends State<FormData> {
                                   ),
                                   // hintText: "Enter Phone Number",
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                             SizedBox(
@@ -907,39 +986,22 @@ class _FormDataState extends State<FormData> {
                                         fontSize: 20),
                                   ),
                                   onPressed: () async {
-                                    // if (_formKey.currentState!.validate()) {
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .showSnackBar(
-                                    //     const SnackBar(
-                                    //         content: Text('Processing Data')),
-                                    //   );
-                                    // } else {
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .showSnackBar(
-                                    //     const SnackBar(
-                                    //         content: Text('Invaild Data')),
-                                    //   );
-                                    // }
-                                    // final pdfFile =
-                                    //     await PdfApi.generateCenteredText({
-                                    //   "firstName": firstName.text,
-                                    //   "designation": designation.text,
-                                    //   "residing": residing.text,
-                                    //   "email": email.text,
-                                    //   "phoneno": phoneno.text,
-                                    //   "linkedin": linkedin.text,
-                                    //   "edcution": addEdtion,
-                                    //   "experience": addExperince,
-                                    //   "project": addProject,
-                                    //   "skills": addskills,
-                                    //   "certicate": addcertificate,
-                                    //   "personal": personal.text,
-                                    // });
-                                    // PdfApi.openFile(pdfFile);
+                                    if (_formKey.currentState!.validate()) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Processing Data')),
+                                      );
+                                            uploadImageFireStorage(imagePickedPath);
 
-                                    uploadImageFireStorage(imagePickedPath);
-
-
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Invaild Data')),
+                                      );
+                                    }
+                                   
                                   },
                                   color: Colors.blue[900],
                                   padding:
@@ -963,8 +1025,6 @@ class _FormDataState extends State<FormData> {
   }
 
 
-
-  
   ///  Upload An IMage
   showMyDialogue(context) {
     showDialog(
@@ -1007,22 +1067,20 @@ class _FormDataState extends State<FormData> {
         });
   }
 
-dynamic imagePickedPath;
+  dynamic imagePickedPath;
   final picker = ImagePicker();
+
   /// Method for sending a selected or taken photo to the DialogBox
   Future selectOrTakePhoto({
-    @required  context,
-    @required  imageSource,
-  }) async {    
+    @required context,
+    @required imageSource,
+  }) async {
     picker.pickImage(source: imageSource, imageQuality: 10).then((value) async {
       // isImageUploaded = true;
 
       imagePickedPath = value!.path;
 
-      
-      setState(() {
-        
-      });
+      setState(() {});
       print(value.path);
       Navigator.pop(context);
       // print("value Path = ${value.path}");
@@ -1037,8 +1095,7 @@ dynamic imagePickedPath;
       //   // _progressDialog.showProgressDialog(context);
       //   String imageName =
       //       "AirHomeRestaurantUser_${GlobalState.userId}_Image.jpg";
-      // 
-
+      //
 
       //   if (snapshot.state == TaskState.success) {
       //     // _progressDialog.dismissProgressDialog(context);
@@ -1059,53 +1116,57 @@ dynamic imagePickedPath;
       //       // message: 'غير قادر على تحميل الصورة المصغرة', context: context);
       //       Navigator.pop(context);
       //     }
-          // _progressDialog.dismissProgressDialog(context);
+      // _progressDialog.dismissProgressDialog(context);
 
-        // } else {
-        //   // _progressDialog.dismissProgressDialog(context);
-        //   Navigator.pop(context);
-        //   print('Error from image repo ${snapshot.state.toString()}');
-        //   throw ('This file is not an image');
-        // }
+      // } else {
+      //   // _progressDialog.dismissProgressDialog(context);
+      //   Navigator.pop(context);
+      //   print('Error from image repo ${snapshot.state.toString()}');
+      //   throw ('This file is not an image');
+      // }
       // }
     });
   }
 
-var downloadUrl="";
-  uploadImageFireStorage(image)async{
+  var downloadUrl = "";
+  uploadImageFireStorage(image) async {
     var storage = FirebaseStorage.instance;
     // print(image);
-  TaskSnapshot snapshot = await storage
-            .ref()
-            .child("${Constants.appUser.userId+Constants.appUser.userName}")
-            .putFile(File(image));
+    TaskSnapshot snapshot = await storage
+        .ref()
+        .child("${Constants.appUser.userId + Constants.appUser.userName}")
+        .putFile(File(image));
 
-if (snapshot.state == TaskState.success) {
-     downloadUrl = await snapshot.ref.getDownloadURL();
+    if (snapshot.state == TaskState.success) {
+      downloadUrl = await snapshot.ref.getDownloadURL();
 
+      FirebaseFirestore.instance
+          .collection("Companies")
+          .doc(widget.companyID)
+          .collection("ApplicationsRecevied")
+          .doc()
+          .set({
+        "CandidateData": {
+          "firstName": firstName.text,
+          "designation": designation.text,
+          "residing": residing.text,
+          "email": email.text,
+          "phoneno": phoneno.text,
+          "linkedin": linkedin.text,
+          "edcution": addEdtion,
+          "experience": addExperince,
+          "project": addProject,
+          "skills": addskills,
+          "certicate": addcertificate,
+          "personal": personal.text,
+        },
+        "CandidateImage": "$downloadUrl"
+      });
 
-                                    FirebaseFirestore.instance.collection("Companies").doc(widget.companyID).collection("ApplicationsRecevied").doc().set({
-                                      "CandidateData":{ "firstName": firstName.text,
-                                      "designation": designation.text,
-                                      "residing": residing.text,
-                                      "email": email.text,
-                                      "phoneno": phoneno.text,
-                                      "linkedin": linkedin.text,
-                                      "edcution": addEdtion,
-                                      "experience": addExperince,
-                                      "project": addProject,
-                                      "skills": addskills,
-                                      "certicate": addcertificate,
-                                      "personal": personal.text,}
-                                      ,"CandidateImage":"$downloadUrl"
-                                    });
-
-
-                                      Navigator.push(context, MaterialPageRoute(builder: (_)=> SearchedList()));
-     print(downloadUrl);
-}
-setState(() {
-  
-});
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => SearchedList()));
+      print(downloadUrl);
+    }
+    setState(() {});
   }
 }
