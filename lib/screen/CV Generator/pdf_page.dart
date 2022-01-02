@@ -14,7 +14,7 @@ class PdfApi {
   static Future<File> generateCenteredText(Map data) async {
     final pdf = pw.Document();
     final imageJpg =
-        (await rootBundle.load('assets/bg.jpg')).buffer.asUint8List();
+        (await rootBundle.load('assets/bg1.jpg')).buffer.asUint8List();
     final pageTheme = PageTheme(
         pageFormat: PdfPageFormat.a4,
         buildBackground: (context) {

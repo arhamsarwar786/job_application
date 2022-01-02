@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_app/screen/CV%20Generator/form.dart';
 import 'package:firebase_app/screen/CV%20Generator/pdf_page.dart';
 import 'package:firebase_app/screen/Post%20Job/post_job.dart';
+import 'package:firebase_app/screen/sign_in/sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/util/constants.dart';
@@ -68,17 +69,9 @@ class _SearchedListState extends State<SearchedList> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // fetchAllJobs();
-          var data = await FirebaseFirestore.instance
-              .collection("Companies")
-              .doc(Constants.appUser.userId)
-              .collection("ApplicationsRecevied")
-              .doc("DkRN2fFl43qBZOBwwd6n")
-              .get();          
-          var d = data.data();          
-             var pdfFile = await PdfApi.generateCenteredText(d!["CandidateData"]);
-          PdfApi.openFile(pdfFile);
+        onPressed: ()  {
+          // print("print");
+          Navigator.push(context, MaterialPageRoute(builder: (_)=> SignInScreen()));
         },
       ),
       backgroundColor: Colors.grey[200],

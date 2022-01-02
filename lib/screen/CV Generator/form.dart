@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/home_screen/jobscreen.dart';
 import 'package:firebase_app/util/constants.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'add_certificate.dart';
 import 'add_edcuation.dart';
@@ -50,6 +54,8 @@ class _FormDataState extends State<FormData> {
               // key: _formKey,
               child: Column(
                 children: [
+
+
                   Card(
                     elevation: 5,
                     shape: RoundedRectangleBorder(
@@ -123,6 +129,45 @@ class _FormDataState extends State<FormData> {
                             ),
                             SizedBox(
                               height: 15,
+                            ),
+
+                                              // Image Picker
+                            Container(
+                              alignment: Alignment.center,
+                              
+                              child: Container(
+                                
+                                height: 150.0,
+                                width: 150.0,
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Colors.blue.shade900, width: 1.0),
+                                    color: Colors.black38,
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image: FileImage(File("$imagePickedPath")),
+                                        fit: BoxFit.cover)
+                                    ),
+                                // child: imagePickedPath == null
+                                //     ? CircularProgressIndicator(
+                                //         color: Colors.red,
+                                //       )
+                                //     : 
+                              child : Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: InkWell(
+                                          onTap: () {
+                                            showMyDialogue(context);
+                                          },
+                                          child: ImageIcon(
+                                            AssetImage(
+                                                "assets/camera.png"),
+                                            color: Colors.blue.shade900,
+                                            size: 40.0,
+                                          ),
+                                        ),
+                                      ),
+                              ),
                             ),
                             const Text(
                               "Your Name",
@@ -892,26 +937,7 @@ class _FormDataState extends State<FormData> {
                                     // });
                                     // PdfApi.openFile(pdfFile);
 
-
-
-                                    FirebaseFirestore.instance.collection("Companies").doc(widget.companyID).collection("ApplicationsRecevied").doc().set({
-                                      "CandidateData":{ "firstName": firstName.text,
-                                      "designation": designation.text,
-                                      "residing": residing.text,
-                                      "email": email.text,
-                                      "phoneno": phoneno.text,
-                                      "linkedin": linkedin.text,
-                                      "edcution": addEdtion,
-                                      "experience": addExperince,
-                                      "project": addProject,
-                                      "skills": addskills,
-                                      "certicate": addcertificate,
-                                      "personal": personal.text,}
-                                    });
-
-
-
-                                      Navigator.push(context, MaterialPageRoute(builder: (_)=> SearchedList()));
+                                    uploadImageFireStorage(imagePickedPath);
 
 
                                   },
@@ -934,5 +960,152 @@ class _FormDataState extends State<FormData> {
         ),
       ),
     );
+  }
+
+
+
+  
+  ///  Upload An IMage
+  showMyDialogue(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                SimpleDialogOption(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Text('Camera'),
+                    ),
+                    onPressed: () {
+                      selectOrTakePhoto(
+                        context: context,
+                        imageSource: ImageSource.camera,
+                      );
+                    }),
+                Divider(
+                  height: 5,
+                ),
+                SimpleDialogOption(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Text('Gallery'),
+                    ),
+                    onPressed: () {
+                      selectOrTakePhoto(
+                        context: context,
+                        imageSource: ImageSource.gallery,
+                      );
+                    }),
+              ],
+            ),
+          );
+        });
+  }
+
+dynamic imagePickedPath;
+  final picker = ImagePicker();
+  /// Method for sending a selected or taken photo to the DialogBox
+  Future selectOrTakePhoto({
+    @required  context,
+    @required  imageSource,
+  }) async {    
+    picker.pickImage(source: imageSource, imageQuality: 10).then((value) async {
+      // isImageUploaded = true;
+
+      imagePickedPath = value!.path;
+
+      
+      setState(() {
+        
+      });
+      print(value.path);
+      Navigator.pop(context);
+      // print("value Path = ${value.path}");
+      // if (value != null)
+      // _image = File(value.path);
+      // else {
+      //   isImageUploaded = false;
+      //   setState(() {});
+      // }
+      // print("Picture Path = $_image");
+      // if (_image != null) {
+      //   // _progressDialog.showProgressDialog(context);
+      //   String imageName =
+      //       "AirHomeRestaurantUser_${GlobalState.userId}_Image.jpg";
+      // 
+
+
+      //   if (snapshot.state == TaskState.success) {
+      //     // _progressDialog.dismissProgressDialog(context);
+      //     downloadUrl = await snapshot.ref.getDownloadURL();
+      //     snapshot.ref.getMetadata().then((value) =>
+      //         print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ${value.fullPath}"));
+      //     isImageUploaded = false;
+      //     setState(() {});
+      //     log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%% URL = $downloadUrl');
+      //     if (downloadUrl != null) {
+      //       log('%%%%%%%%%%%%%%%%%%%%%%%%%%%% downloadUrl = $downloadUrl');
+      //       // _progressDialog.dismissProgressDialog(context);
+
+      //     } else {
+      //       // _progressDialog.dismissProgressDialog(context);
+
+      //       // _notification.error(
+      //       // message: 'غير قادر على تحميل الصورة المصغرة', context: context);
+      //       Navigator.pop(context);
+      //     }
+          // _progressDialog.dismissProgressDialog(context);
+
+        // } else {
+        //   // _progressDialog.dismissProgressDialog(context);
+        //   Navigator.pop(context);
+        //   print('Error from image repo ${snapshot.state.toString()}');
+        //   throw ('This file is not an image');
+        // }
+      // }
+    });
+  }
+
+var downloadUrl="";
+  uploadImageFireStorage(image)async{
+    var storage = FirebaseStorage.instance;
+    // print(image);
+  TaskSnapshot snapshot = await storage
+            .ref()
+            .child("${Constants.appUser.userId+Constants.appUser.userName}")
+            .putFile(File(image));
+
+if (snapshot.state == TaskState.success) {
+     downloadUrl = await snapshot.ref.getDownloadURL();
+
+
+                                    FirebaseFirestore.instance.collection("Companies").doc(widget.companyID).collection("ApplicationsRecevied").doc().set({
+                                      "CandidateData":{ "firstName": firstName.text,
+                                      "designation": designation.text,
+                                      "residing": residing.text,
+                                      "email": email.text,
+                                      "phoneno": phoneno.text,
+                                      "linkedin": linkedin.text,
+                                      "edcution": addEdtion,
+                                      "experience": addExperince,
+                                      "project": addProject,
+                                      "skills": addskills,
+                                      "certicate": addcertificate,
+                                      "personal": personal.text,}
+                                      ,"CandidateImage":"$downloadUrl"
+                                    });
+
+
+                                      Navigator.push(context, MaterialPageRoute(builder: (_)=> SearchedList()));
+     print(downloadUrl);
+}
+setState(() {
+  
+});
   }
 }

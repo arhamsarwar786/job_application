@@ -6,6 +6,8 @@ import 'package:firebase_app/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import 'check_posted_jobs.dart';
+
 class PostedJobs extends StatefulWidget {  
 
   @override
@@ -43,10 +45,12 @@ class _PostedJobsState extends State<PostedJobs> {
                        Container(
                 
                 child: StreamBuilder(                
-                    stream: FirebaseFirestore.instance.collection("Companies").doc(Constants.appUser.userId).collection("ApplicationsRecevied").snapshots(),
+                    stream: FirebaseFirestore.instance.collection("Companies").doc(Constants.appUser.userId).collection("jobPosts").snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      // EasyLoading.show(status: 'Please wait', maskType: EasyLoadingMaskType.black,);
                       QuerySnapshot data = snapshot.data as QuerySnapshot;
                       var dataList = data.docs;
+                      print(dataList.length);
                       // if (snapshot.data!.docs.isEmpty || snapshot.data == null)
                       // return  Center(child: CircularProgressIndicator());
                       if (snapshot.hasData && snapshot.data != null) {
@@ -88,7 +92,7 @@ CardsDetail(QueryDocumentSnapshot data){
                 width: double.infinity,
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckDetails(data)));
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckPostedJobs(data)));
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -120,7 +124,7 @@ CardsDetail(QueryDocumentSnapshot data){
                               child:  Padding(
                                 padding: EdgeInsets.fromLTRB(5, 8, 0, 0),
                                 child: Text(
-                                  data.get("CandidateData")["firstName"],
+                                  data.get("title"),
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 17,
@@ -136,7 +140,7 @@ CardsDetail(QueryDocumentSnapshot data){
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                 child: Text(
-                                  '${data.get("CandidateData")["personal"]}',
+                                  '${data.get("discription")}',
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   style: TextStyle(

@@ -52,7 +52,7 @@ class _ApplicationsListState extends State<ApplicationsList> {
                       // return  Center(child: CircularProgressIndicator());
                       if (snapshot.hasData && snapshot.data != null) {
                         EasyLoading.dismiss();                  
-                        return ListView.builder(
+                        return  ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: dataList.isEmpty ? 0 : dataList.length,
@@ -60,7 +60,9 @@ class _ApplicationsListState extends State<ApplicationsList> {
                               return CardsDetail( dataList[i]);
                             });
                       }
-
+                      // else if(snapshot.data!.docs.isEmpty){
+                      //     return Center(child: Text("NO"),);
+                      // }
                       return Container(
                         // height: size.height,
                         child: Align(
@@ -101,16 +103,12 @@ CardsDetail(QueryDocumentSnapshot data){
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        const Padding(
+                         Padding(
                           padding: EdgeInsets.all(8.0),
                           child: CircleAvatar(
                             backgroundColor: Colors.grey,
                             radius: 25,
-                            child: Icon(
-                              Icons.person,
-                              size: 50,
-                              color: Colors.black45,
-                            ),
+                            backgroundImage: NetworkImage("${data.get("CandidateImage")}"),
                           ),
                         ),
                         Column(

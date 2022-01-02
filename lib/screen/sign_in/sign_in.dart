@@ -37,9 +37,9 @@ class _SignInScreenState extends State<SignInScreen> {
       EasyLoading.dismiss();     
       if (result['Status'] == "Success")
       {
-        var userGet = await FirebaseFirestore.instance.collection("users").doc(Constants.appUser.userId).get();
+        // var userGet = await FirebaseFirestore.instance.collection("users").doc(Constants.appUser.userId).get();
         // print(userGet.get("isRec"));
-        if (userGet.get("isRec")) {
+        if (Constants.appUser.isRec) {
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>CompanyLanding()), (Route<dynamic> route) => false);
         }else{
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>SearchedList()), (Route<dynamic> route) => false);

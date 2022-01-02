@@ -300,16 +300,12 @@ class _CompanyLandingState extends State<CompanyLanding> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Padding(
+               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   backgroundColor: Colors.grey,
                   radius: 25,
-                  child: Icon(
-                    Icons.person,
-                    size: 50,
-                    color: Colors.black45,
-                  ),
+                 backgroundImage: NetworkImage("${data.get("CandidateImage")}"),
                 ),
               ),
               Column(

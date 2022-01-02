@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_app/screen/Company%20Block/company_landing.dart';
 import 'package:firebase_app/screen/home_screen/jobscreen.dart';
 import 'package:firebase_app/services/appcontroller.dart';
 import 'package:firebase_app/util/constants.dart';
@@ -22,6 +23,7 @@ class _PostJobState extends State<PostJob> {
   var city = TextEditingController();
 
   postJob() async {
+    FocusScope.of(context).unfocus();
     EasyLoading.show(
       status: 'Please wait',
       maskType: EasyLoadingMaskType.black,
@@ -45,19 +47,18 @@ class _PostJobState extends State<PostJob> {
     });
 
     EasyLoading.dismiss();
-    Navigator.push(context, MaterialPageRoute(builder: (_) => SearchedList()));
+    final snackBar = SnackBar(
+      backgroundColor: Colors.blue[900],
+            content: const Text('JOB Successfully POSTED'),            
+          );
+ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    Navigator.push(context, MaterialPageRoute(builder: (_) => CompanyLanding()));
     // print("$ids");
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => SearchedList()));
-        },
-      ),
+    return Scaffold(   
       backgroundColor: Colors.blue[900],
       body: SafeArea(
         child: SingleChildScrollView(
@@ -100,12 +101,12 @@ class _PostJobState extends State<PostJob> {
                               Container(
                                 height: 100,
                                 width: 110,
-                                color: Colors.red,
-                                // decoration: const BoxDecoration(
-                                //     // color: Colors.amber,
-                                //     image: DecorationImage(
-                                //   image: AssetImage("Assets/employee.jpg"),
-                                // )),
+                                
+                                decoration: const BoxDecoration(
+                                    // color: Colors.amber,
+                                    image: DecorationImage(
+                                  image: AssetImage("assets/demo.jpeg"),
+                                )),
                               ),
                             ],
                           ),
@@ -156,9 +157,11 @@ class _PostJobState extends State<PostJob> {
                             height: 40,
                             width: MediaQuery.of(context).size.width / 1.1,
                             child: TextField(
+                              // maxLines: null,
+                              // expands: true,
                               controller: title,
                               cursorColor: Colors.black,
-                              textAlign: TextAlign.center,
+                              // textAlign: TextAlign.center,
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -193,7 +196,7 @@ class _PostJobState extends State<PostJob> {
                               controller: disc,
                               keyboardType: TextInputType.name,
                               cursorColor: Colors.black,
-                              textAlign: TextAlign.center,
+                              
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -226,7 +229,7 @@ class _PostJobState extends State<PostJob> {
                             child: TextField(
                               controller: city,
                               cursorColor: Colors.black,
-                              textAlign: TextAlign.center,
+                              
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(

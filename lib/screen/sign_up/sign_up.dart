@@ -1,4 +1,6 @@
+import 'package:firebase_app/screen/Company%20Block/company_landing.dart';
 import 'package:firebase_app/screen/home_screen/home_screen.dart';
+import 'package:firebase_app/screen/home_screen/jobscreen.dart';
 import 'package:firebase_app/services/appcontroller.dart';
 import 'package:firebase_app/util/constants.dart';
 import 'package:firebase_app/util/size_config.dart';
@@ -37,7 +39,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (result['Status'] == "Success")
       {
         print(result['Status']);
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>HomeScreen()), (Route<dynamic> route) => false);
+        
+          if (Constants.appUser.isRec) {
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>CompanyLanding()), (Route<dynamic> route) => false);
+        }else{
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>SearchedList()), (Route<dynamic> route) => false);
+        }
       }
       else 
       {
