@@ -85,7 +85,7 @@ class CheckDetails extends StatelessWidget {
                         var cvData = data.data();
 
                         final pdfFile = await PdfApi.generateCenteredText(
-                            cvData!["CandidateData"]);
+                            cvData!["CandidateData"],cvData!['CandidateImage']);
                         PdfApi.openFile(pdfFile);
                       },
                       color: Colors.blue[900],

@@ -416,7 +416,7 @@ class _CompanyLandingState extends State<CompanyLanding> {
           ),
           ListTile(
             leading: Icon(
-              Icons.format_align_justify_rounded,
+              Icons.person_add_alt,
               color: Constants.appThemeColor,
               size: 30.0,
             ),
@@ -454,12 +454,12 @@ class _CompanyLandingState extends State<CompanyLanding> {
           // ),
           ListTile(
             leading: Icon(
-              Icons.forum,
+              Icons.format_align_justify_rounded,
               color: Constants.appThemeColor,
               size: 30.0,
             ),
             title: Text(
-              'Select Domain',
+              'Total Posted Jobs',
               style: TextStyle(
                 color: Constants.appThemeColor,
               ),
@@ -467,7 +467,7 @@ class _CompanyLandingState extends State<CompanyLanding> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SelectionJob()),
+                MaterialPageRoute(builder: (context) => PostedJobs()),
               );
             },
           ),

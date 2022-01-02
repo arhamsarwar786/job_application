@@ -45,6 +45,7 @@ dependencies:
   hive: ^2.0.5
   image_picker: ^0.8.4+4
   url_launcher: ^6.0.17
+  http:
 
 dev_dependencies:
   flutter_test:

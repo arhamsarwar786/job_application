@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 import 'image.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -11,7 +13,13 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
-  static Future<File> generateCenteredText(Map data) async {
+  static Future<File> generateCenteredText(Map data,imageStored) async {
+    
+    http.Response response = await http.get(Uri.parse(imageStored)
+);   
+    final image = pw.MemoryImage(
+            response.bodyBytes
+);
     final pdf = pw.Document();
     final imageJpg =
         (await rootBundle.load('assets/bg1.jpg')).buffer.asUint8List();
@@ -32,22 +40,25 @@ class PdfApi {
             return pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                // pw.Image(
-                //   pw.MemoryImage(imageJpg),
-                // ),
+                
                 pw.Container(
                   width: PdfPageFormat.a3.width,
                   // color: PdfColors.blue200,
                   child: pw.Row(
                     children: [
-                      pw.SizedBox(width: 20.0),
                       pw.Container(
-                        width: 80.0,
-                        height: 80.0,
+                        height: 150,
+                        width: 100,
+                        decoration: pw.BoxDecoration(
+                          borderRadius: pw.BorderRadius.circular(10),
+                          image: pw.DecorationImage(image: pw.MemoryImage(image.bytes))
+                        ),
+                        
                       ),
-                      pw.SizedBox(width: 20.0),
+                      pw.SizedBox(width: 50.0),
+                                            
                       pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
                         children: [
                           pw.Text(
                             data['firstName'],
@@ -58,13 +69,13 @@ class PdfApi {
                             ),
                           ),
                           pw.SizedBox(height: 10.0),
-                          pw.Padding(
-                            padding: pw.EdgeInsets.only(left: 150),
-                            child: pw.Text(data['designation'],
+                          // pw.Padding(
+                            // padding: pw.EdgeInsets.only(left: 100),
+                             pw.Text(data['designation'],
                                 style: pw.TextStyle(
                                   fontSize: 20.0,
                                 )),
-                          ),
+                          // ),
                           pw.SizedBox(
                             height: 50,
                           ),
