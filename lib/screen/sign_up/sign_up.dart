@@ -43,7 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           if (Constants.appUser.isRec) {
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>CompanyLanding()), (Route<dynamic> route) => false);
         }else{
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>SearchedList()), (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>HomeScreen()), (Route<dynamic> route) => false);
         }
       }
       else 

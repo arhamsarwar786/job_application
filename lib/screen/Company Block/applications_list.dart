@@ -16,6 +16,7 @@ class _ApplicationsListState extends State<ApplicationsList> {
   
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -46,12 +47,12 @@ class _ApplicationsListState extends State<ApplicationsList> {
                 child: StreamBuilder(                
                     stream: FirebaseFirestore.instance.collection("Companies").doc(Constants.appUser.userId).collection("ApplicationsRecevied").snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      QuerySnapshot data = snapshot.data as QuerySnapshot;
-                      var dataList = data.docs;
                       // if (snapshot.data!.docs.isEmpty || snapshot.data == null)
                       // return  Center(child: CircularProgressIndicator());
                       if (snapshot.hasData && snapshot.data != null) {
-                        EasyLoading.dismiss();                  
+                      QuerySnapshot data = snapshot.data as QuerySnapshot;
+                      var dataList = data.docs;
+                                         
                         return  ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
@@ -61,13 +62,14 @@ class _ApplicationsListState extends State<ApplicationsList> {
                             });
                       }
                       // else if(snapshot.data!.docs.isEmpty){
+                      //   return Center(child: Text("No Application Recevied!"),);
+                      // }
+                      // else if(snapshot.data!.docs.isEmpty){
                       //     return Center(child: Text("NO"),);
                       // }
                       return Container(
-                        // height: size.height,
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: CircularProgressIndicator()),
+                        height: size.height,
+                        child: Center(child: CircularProgressIndicator()),
                       );
                     }),
               ),
@@ -135,7 +137,7 @@ CardsDetail(QueryDocumentSnapshot data){
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                 child: Text(
-                                  '${data.get("CandidateData")["personal"]}',
+                                  '${data.get("CandidateData")["designation"]}',
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   style: TextStyle(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/Company%20Block/check_details_and_cv.dart';
+import 'package:firebase_app/screen/Company%20Block/posted_jobs_list.dart';
 import 'package:firebase_app/util/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -126,7 +127,11 @@ class _CheckPostedJobsState extends State<CheckPostedJobs> {
 
                  MaterialButton(
                 color: Colors.red[900],
-                onPressed: (){},child: Row(
+                onPressed: (){
+
+                  showAlertDialog(context);
+                  
+                },child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Delete",style:TextStyle(color: Colors.white),),                    
@@ -138,4 +143,42 @@ class _CheckPostedJobsState extends State<CheckPostedJobs> {
       ),
     );
   }
+
+
+
+showAlertDialog(BuildContext context) {
+
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed:  () {
+      Navigator.pop(context);
+    },
+  );
+  Widget continueButton = TextButton(
+    child: Text("Continue"),
+    onPressed:  () {
+      FirebaseFirestore.instance.collection("Companies").doc(Constants.appUser.userId).collection("jobPosts").doc(widget.data.id).delete();
+                  Navigator.push(context, MaterialPageRoute(builder: (_)=> PostedJobs() ));
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Delete Posted Job?"),
+    content: Text("Are you really want to Delete Posted Job it will not Recover Again!"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
 }

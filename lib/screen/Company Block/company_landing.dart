@@ -209,10 +209,10 @@ class _CompanyLandingState extends State<CompanyLanding> {
               .collection("ApplicationsRecevied")
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
             QuerySnapshot data = snapshot.data as QuerySnapshot;
             var dataList = data.docs;
-            if (snapshot.hasData && snapshot.data != null) {
-              EasyLoading.dismiss();
+              // EasyLoading.dismiss();
               applicationsLength = dataList.length;
               return Stack(
                 children: [
@@ -259,7 +259,19 @@ class _CompanyLandingState extends State<CompanyLanding> {
                               ),
                             ],
                           ),
-                          ListView.builder(
+                        dataList.isEmpty ? Container(
+                          height: size.height * 0.54,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("No Applications",  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12.sp,
+                                    ),),
+                            ],
+                          ),
+                        ):  ListView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: dataList.isEmpty ? 0 : dataList.length,

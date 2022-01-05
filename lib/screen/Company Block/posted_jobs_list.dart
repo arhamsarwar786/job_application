@@ -36,57 +36,35 @@ class _PostedJobsState extends State<PostedJobs> {
       ),
       // FirebaseFirestore.instance.collection("Companies").doc(widget.companyID).collection("ApplicationsRecevied")
       body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [   
+        child: StreamBuilder(                
+            stream: FirebaseFirestore.instance.collection("Companies").doc(Constants.appUser.userId).collection("jobPosts").snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {                      
+              if (snapshot.hasData && snapshot.data != null) {
+              QuerySnapshot data = snapshot.data as QuerySnapshot;
+              var dataList = data.docs;
+         // EasyLoading.dismiss();                  
+         return dataList.isEmpty? Center(child: Text("No Posted Job")): ListView.builder(
+             shrinkWrap: true,
+             physics: NeverScrollableScrollPhysics(),
+             itemCount: dataList.isEmpty ? 0 : dataList.length,
+             itemBuilder: (context, i) {
+         return CardsDetail( dataList[i]);
+             });
+              }
 
-                       Container(
-                
-                child: StreamBuilder(                
-                    stream: FirebaseFirestore.instance.collection("Companies").doc(Constants.appUser.userId).collection("jobPosts").snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      // EasyLoading.show(status: 'Please wait', maskType: EasyLoadingMaskType.black,);
-                      QuerySnapshot data = snapshot.data as QuerySnapshot;
-                      var dataList = data.docs;
-                      print(dataList.length);
-                      // if (snapshot.data!.docs.isEmpty || snapshot.data == null)
-                      // return  Center(child: CircularProgressIndicator());
-                      if (snapshot.hasData && snapshot.data != null) {
-                        EasyLoading.dismiss();                  
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: dataList.isEmpty ? 0 : dataList.length,
-                            itemBuilder: (context, i) {
-                              return CardsDetail( dataList[i]);
-                            });
-                      }
-
-                      return Container(
-                        // height: size.height,
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: CircularProgressIndicator()),
-                      );
-                    }),
-              ),
-// ,...................................................///
-            
-          
-                 
-                  
-                
-              
-            ],
-          ),
-        ),
+              return Container(
+         // height: size.height,
+         child: Align(
+             alignment: Alignment.center,
+             child: CircularProgressIndicator()),
+              );
+            }),
       ),
     );
   }
 
 CardsDetail(QueryDocumentSnapshot data){
+  
     return 
               Container(
                 width: double.infinity,

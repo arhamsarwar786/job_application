@@ -1,4 +1,5 @@
 import 'package:firebase_app/model/app_user.dart';
+import 'package:firebase_app/screen/home_screen/applied_jobs.dart';
 import 'package:firebase_app/screen/home_screen/jobscreen.dart';
 import 'package:firebase_app/screen/selectdoman/SelectionJob.dart';
 import 'package:firebase_app/screen/sign_in/sign_in.dart';
@@ -226,12 +227,12 @@ class _HomeScreenState extends State<HomeScreen> {
           // ),
           ListTile(
             leading: Icon(
-              Icons.forum,
+              Icons.list_alt_outlined,
               color: Constants.appThemeColor,
               size: 30.0,
             ),
             title: Text(
-              'Select Domain',
+              'Applied Jobs',
               style: TextStyle(
                 color: Constants.appThemeColor,
               ),
@@ -239,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SelectionJob()),
+                MaterialPageRoute(builder: (context) => AppliedJobs()),
               );
             },
           ),

@@ -7,7 +7,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 import 'add_certificate.dart';
 import 'add_edcuation.dart';
 import 'add_experince.dart';
@@ -43,8 +42,8 @@ class _FormDataState extends State<FormData> {
   List addskills = [];
   List addcertificate = [];
 
-  @override
   final _formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[900],
@@ -76,7 +75,7 @@ class _FormDataState extends State<FormData> {
                                 Padding(
                                   padding: EdgeInsets.all(5.0),
                                   child: Text(
-                                    "Welcome to Indeed for Employers!",
+                                    "Welcome to Devsinn for Employers!",
                                     style: GoogleFonts.josefinSans(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -116,8 +115,8 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 15,
                             ),
-                          
-  // Image Picker
+
+                            // Image Picker
                             Container(
                               alignment: Alignment.center,
                               child: Container(
@@ -987,13 +986,12 @@ class _FormDataState extends State<FormData> {
                                   ),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
+                                      uploadImageFireStorage(imagePickedPath);
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
                                             content: Text('Processing Data')),
                                       );
-                                            uploadImageFireStorage(imagePickedPath);
-
                                     } else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -1001,7 +999,6 @@ class _FormDataState extends State<FormData> {
                                             content: Text('Invaild Data')),
                                       );
                                     }
-                                   
                                   },
                                   color: Colors.blue[900],
                                   padding:
@@ -1023,7 +1020,6 @@ class _FormDataState extends State<FormData> {
       ),
     );
   }
-
 
   ///  Upload An IMage
   showMyDialogue(context) {
@@ -1129,6 +1125,7 @@ class _FormDataState extends State<FormData> {
   }
 
   var downloadUrl = "";
+
   uploadImageFireStorage(image) async {
     var storage = FirebaseStorage.instance;
     // print(image);
@@ -1163,10 +1160,33 @@ class _FormDataState extends State<FormData> {
         "CandidateImage": "$downloadUrl"
       });
 
+
+       FirebaseFirestore.instance
+          .collection("users")
+          .doc(Constants.appUser.userId)
+          .collection("AppliedJobs")
+          .doc()
+          .set({
+        "CandidateData": {
+          "firstName": firstName.text,
+          "designation": designation.text,
+          "residing": residing.text,
+          "email": email.text,
+          "phoneno": phoneno.text,
+          "linkedin": linkedin.text,
+          "edcution": addEdtion,
+          "experience": addExperince,
+          "project": addProject,
+          "skills": addskills,
+          "certicate": addcertificate,
+          "personal": personal.text,
+        },
+        "CandidateImage": "$downloadUrl"
+      });
+
       Navigator.push(
           context, MaterialPageRoute(builder: (_) => SearchedList()));
-      print(downloadUrl);
+      
     }
-    setState(() {});
   }
 }

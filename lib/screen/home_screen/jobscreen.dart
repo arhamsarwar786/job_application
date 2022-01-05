@@ -27,14 +27,14 @@ class SearchedList extends StatefulWidget {
 class _SearchedListState extends State<SearchedList> {
   dynamic allJobs;
 
-  @override
-  void initState() {
-    super.initState();
-    EasyLoading.show(
-      status: 'Please wait',
-      maskType: EasyLoadingMaskType.black,
-    );
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   EasyLoading.show(
+  //     status: 'Please wait',
+  //     maskType: EasyLoadingMaskType.black,
+  //   );
+  // }
 
   fetchAllJobs() async {
     print("Click");
@@ -69,9 +69,10 @@ class _SearchedListState extends State<SearchedList> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: ()  {
+        onPressed: () {
           // print("print");
-          Navigator.push(context, MaterialPageRoute(builder: (_)=> SignInScreen()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => SignInScreen()));
         },
       ),
       backgroundColor: Colors.grey[200],
@@ -91,16 +92,14 @@ class _SearchedListState extends State<SearchedList> {
                         .collection("AllJOBS")
                         .snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      QuerySnapshot data = snapshot.data as QuerySnapshot;
-                      var dataList = data.docs;
-                      // if (snapshot.data!.docs.isEmpty || snapshot.data == null)
-                      // return  Center(child: CircularProgressIndicator());
+                                         
                       if (snapshot.hasData && snapshot.data != null) {
-                        EasyLoading.dismiss();
+                        QuerySnapshot data = snapshot.data as QuerySnapshot;
+                        var dataList = data.docs;                      
 
-                        if (widget.query != null) filterData(dataList);
+                        // if (widget.query != null) filterData(dataList);
 
-                        return ListView.builder(
+                        return   ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: dataList.isEmpty ? 0 : dataList.length,
@@ -227,12 +226,11 @@ class _SearchedListState extends State<SearchedList> {
     );
   }
 
-  Widget CardsDetail(size,QueryDocumentSnapshot data) {
+  Widget CardsDetail(size, QueryDocumentSnapshot data) {
     return Stack(children: [
       InkWell(
         onTap: () {
           Navigator.push(
-            
               context, MaterialPageRoute(builder: (_) => JobDetails(data)));
         },
         child: Container(
