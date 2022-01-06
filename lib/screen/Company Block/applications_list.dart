@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/Company%20Block/check_details_and_cv.dart';
+import 'package:firebase_app/screen/Company%20Block/company_landing.dart';
 import 'package:firebase_app/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -21,7 +22,7 @@ class _ApplicationsListState extends State<ApplicationsList> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         leading: IconButton(onPressed: (){
-          Navigator.pop(context);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> CompanyLanding()),(Route<dynamic> route) => true);
         }, icon:  Icon(
           Icons.arrow_back_sharp,
           size: 20,

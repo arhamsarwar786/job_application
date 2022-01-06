@@ -10,9 +10,9 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
-class JobDetails extends StatelessWidget {
-  final QueryDocumentSnapshot data;
-  JobDetails(this.data);
+class JobDetails1 extends StatelessWidget {
+  final data;
+  JobDetails1(this.data);
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,10 @@ class JobDetails extends StatelessWidget {
             CardsDetail2(
               context,
                 size,
-                data.get("title"),
-                "${data.get('city')}",
+                data["title"],
+                "${data['city']}",
                 '''
-                ${data.get("discription")}
+                ${data["discription"]}
                  '''),
           ]),
           appBAR(size,context),
@@ -56,7 +56,7 @@ class JobDetails extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        title: Text(data.get("title")),
+        title: Text(data["title"]),
         backgroundColor: Colors.blue[900],
       ),
     );
@@ -84,8 +84,7 @@ class JobDetails extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 )),
-            
-          
+         
           ],
         ),
       ),
@@ -101,7 +100,7 @@ class JobDetails extends StatelessWidget {
               borderRadius: BorderRadius.circular(5),
             ),
             child: Text(
-              data.get('companyUserName')[0].toString().toUpperCase(),
+              data['companyUserName'][0].toString().toUpperCase(),
               style: TextStyle(
                   fontSize: 24.sp,
                   color: Colors.white,
@@ -127,7 +126,7 @@ class JobDetails extends StatelessWidget {
                   Padding(
                       padding: EdgeInsets.only(left: 2.h),
                       child: Text(
-                        "${DateFormat('yMMMMd').format(data.get('timestamp').toDate())}",
+                        "${DateFormat('yMMMMd').format(data['timestamp'].toDate())}",
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 10.sp,
@@ -172,7 +171,7 @@ class JobDetails extends StatelessWidget {
                     minWidth: size.width,
                     height: size.height * 0.05,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=> FormData(data.get("companyID")) ));
+                      Navigator.push(context, MaterialPageRoute(builder: (_)=> FormData(data["companyID"]) ));
                       // print(data.get("companyID"));
                     },
                     color: Colors.blue[900],

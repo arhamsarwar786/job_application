@@ -1,4 +1,5 @@
 // ignore_for_file: file_names
+import 'dart:io';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/model/app_user.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sizer/sizer.dart';
@@ -54,13 +56,42 @@ class _CompanyLandingState extends State<CompanyLanding> {
     fetchPostedJobs();
   }
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit an App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (Platform.isAndroid) {
+                    SystemNavigator.pop();
+                  } else if (Platform.isIOS) {
+                    exit(0);
+                  }
+                },
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(    
-      drawer: homeDrawer(context),
-      backgroundColor: Colors.grey[200],
-      body: CardsDetail2(size),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(    
+        drawer: homeDrawer(context),
+        backgroundColor: Colors.grey[200],
+        body: CardsDetail2(size),
+      ),
     );
   }
 
@@ -412,20 +443,20 @@ class _CompanyLandingState extends State<CompanyLanding> {
               ),
             ),
           ),
-          ListTile(
-            leading: Icon(
-              Icons.account_circle,
-              color: Constants.appThemeColor,
-              size: 30.0,
-            ),
-            title: Text(
-              'My Profile',
-              style: TextStyle(
-                color: Constants.appThemeColor,
-              ),
-            ),
-            onTap: () {},
-          ),
+          // ListTile(
+          //   leading: Icon(
+          //     Icons.account_circle,
+          //     color: Constants.appThemeColor,
+          //     size: 30.0,
+          //   ),
+          //   title: Text(
+          //     'My Profile',
+          //     style: TextStyle(
+          //       color: Constants.appThemeColor,
+          //     ),
+          //   ),
+          //   onTap: () {},
+          // ),
           ListTile(
             leading: Icon(
               Icons.person_add_alt,

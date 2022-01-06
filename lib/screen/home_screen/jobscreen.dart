@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_app/screen/CV%20Generator/form.dart';
 import 'package:firebase_app/screen/CV%20Generator/pdf_page.dart';
 import 'package:firebase_app/screen/Post%20Job/post_job.dart';
+import 'package:firebase_app/screen/home_screen/home_screen.dart';
 import 'package:firebase_app/screen/sign_in/sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sizer/sizer.dart';
 import 'jobdetailscreen.dart';
+import 'jobdetailscreen1.dart';
 
 class SearchedList extends StatefulWidget {
   final query;
@@ -49,39 +51,63 @@ class _SearchedListState extends State<SearchedList> {
 
   /// Filter Data
   filterData(List<QueryDocumentSnapshot> data) {
+    print(data.length);
     // print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%5   ${data.runtimeType}");
     // data.map((e) => print(e.get("title")));
-    data.forEach((element) {
-      element.get("title").toString().toLowerCase();
+
+    var allData = [];
+    var allData1 = [];
+    if(data.isNotEmpty)
+    data.forEach((element) { 
+      allData.add(element.data());
+      allData1.add(element.data());
     });
-    // dynamic filterdData = [];
-    // data = data.map(( data) => data.get("title").toString().toLowerCase()).toList();
-    // filterdData = data
+    else{
+      print("Empty");
+    }
+    
+    data.clear();
+
+    // allData.forEach((element) { 
+    //   print(element['title']);
+    // });
+    List finalList = [];
+    dynamic filterdData = [];
+    allData = allData.map((e) => e['title'].toString().toUpperCase() ).toList();
+    filterdData = allData.where((element) => element.contains(widget.query.toString().toUpperCase()));
+    filterdData = filterdData.toList();
+
+    for (var i = 0; i < filterdData.length; i++) {
+      for (var j = 0; j < allData1.length ; j++) {
+          if(filterdData[i] == allData1[j]['title'].toString().toUpperCase()){
+            finalList.add(allData1[j]);
+          }
+      }
+    }
+    print(finalList);
+    // allData = allData.map(( allData) => allData.toString().toLowerCase()).toList();
+    // filterdData = allData
     //     .where((element) =>
     //         element.contains(widget.query.toString().toLowerCase()))
     //     .toList();
-    //     print(filterdData);
-    // return filterdData;
+
+        // allData.contains(widget.query);
+        // print(allData.toString().toLowerCase().contains(widget.query.toString().toLowerCase()));
+        // print(filterdData);
+    return finalList;
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // print("print");
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => SignInScreen()));
-        },
-      ),
+    return Scaffold(          
       backgroundColor: Colors.grey[200],
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Column(children: [
               Container(
-                margin: EdgeInsets.only(top: size.height * 0.18),
+                margin: EdgeInsets.only(top: size.height * 0.10),
                 child: StreamBuilder(
                     // stream: FirebaseFirestore.instance
                     //     .collection("Companies")
@@ -95,16 +121,19 @@ class _SearchedListState extends State<SearchedList> {
                                          
                       if (snapshot.hasData && snapshot.data != null) {
                         QuerySnapshot data = snapshot.data as QuerySnapshot;
-                        var dataList = data.docs;                      
-
-                        // if (widget.query != null) filterData(dataList);
-
-                        return   ListView.builder(
+                        dynamic dataList = data.docs;               
+                        if ( widget.query != null )
+                        {
+                          if(widget.query.isNotEmpty){
+                           dataList =  filterData(dataList);                            
+                          }
+                        }                        
+                        return  ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: dataList.isEmpty ? 0 : dataList.length,
                             itemBuilder: (context, i) {
-                              return CardsDetail(size, dataList[i]);
+                              return  widget.query != null ? widget.query.isNotEmpty ? CardsDetail1(size, dataList[i]) :  CardsDetail(size, dataList[i]): CardsDetail(size, dataList[i]);
                             });
                       }
 
@@ -117,18 +146,11 @@ class _SearchedListState extends State<SearchedList> {
                     }),
               ),
 
-              // Container(
-              //   margin: EdgeInsets.only(top: size.height * 0.18),
-              //   child: CardsDetail(size, "Sr.UX Engineer - Ember.js (Remote)",
-              //       "United Kingdom"),
-              // ),
-              // CardsDetail(size, "Golang Developer (Remote)", "India"),
-              // CardsDetail(
-              // size, "Sr.Linux Engineer - Epp Product (Remote)", "Pakistan")
+           
             ]),
           ),
           appBAR(size),
-          searchBar(size),
+          // searchBar(size),
         ],
       ),
     );
@@ -141,26 +163,14 @@ class _SearchedListState extends State<SearchedList> {
       // top: 20,
 
       child: AppBar(
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 2.h),
-            child: IconButton(
-              onPressed: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (_) => FormData(),
-                //     ));
-              },
-              icon: Icon(
-                Icons.menu,
-                size: 4.h,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-        title: Text("Octo Job Search"),
+          leading: IconButton(onPressed: (){
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> HomeScreen() ),(Route<dynamic> route) => true);
+        }, icon:  Icon(
+          Icons.arrow_back_sharp,
+          size: 20,
+          color: Colors.white,
+        ),),
+        title: Text("Search Jobs"),
         backgroundColor: Colors.blue[900],
       ),
     );
@@ -215,18 +225,20 @@ class _SearchedListState extends State<SearchedList> {
               color: Colors.blue[900],
               borderRadius: BorderRadius.circular(5.0),
             ),
-            child: Icon(
+            child: IconButton(onPressed: (){
+
+            }, icon: Icon(
               Icons.search,
               color: Colors.white,
               size: 22.sp,
-            ),
+            ),)
           ),
         ]),
       ),
     );
   }
 
-  Widget CardsDetail(size, QueryDocumentSnapshot data) {
+  Widget CardsDetail(size,  data) {
     return Stack(children: [
       InkWell(
         onTap: () {
@@ -328,10 +340,124 @@ class _SearchedListState extends State<SearchedList> {
                 color: Colors.red[600],
                 borderRadius: BorderRadius.circular(10)),
             child: Text(
-              "C",
+              data.get('companyUserName')[0].toString().toUpperCase(),              
               style: TextStyle(fontSize: 14.sp, color: Colors.white),
             ),
           )),
     ]);
   }
+
+
+  Widget CardsDetail1(size,  data) {
+    print(data);
+    return Stack(children: [
+      InkWell(
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => JobDetails1(data)));
+        },
+        child: Container(
+          margin: EdgeInsets.only(left: 2.h, right: 2.h, top: 6.h),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+          child: Column(
+            children: [
+              MaterialButton(
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(
+                      Icons.visibility_outlined,
+                      color: Colors.blue[900],
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(left: 2.h),
+                        child: Text(
+                          "View Details",
+                          style: TextStyle(
+                            color: Colors.blue[900],
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                      padding: EdgeInsets.only(left: 2.h),
+                      child: Text(
+                        "${DateFormat('yMMMMd').format(data['timestamp'].toDate())}",
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      )),
+                  // Padding(
+                  //     padding: EdgeInsets.only(right: 2.h),
+                  //     child: Text(
+                  //       "Full Time",
+                  //       style: TextStyle(
+                  //         color: Colors.grey,
+                  //       ),
+                  //     )),
+                ],
+              ),
+              Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 2.h, top: 1.5.h),
+                  child: Text(
+                    data["title"],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  )),
+              Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 2.h, top: 1.5.h),
+                  child: Text(
+                    data["discription"],
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12.sp,
+                    ),
+                  )),
+              Container(
+                  alignment: Alignment.centerLeft,
+                  padding:
+                      EdgeInsets.only(left: 2.h, top: 3.5.h, bottom: 2.5.h),
+                  child: Text(
+                    data['city'],
+                    style: TextStyle(
+                      color: Colors.blue[900],
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
+            ],
+          ),
+        ),
+      ),
+      Positioned(
+          top: size.height * 0.03,
+          left: size.width * 0.15,
+          child: Container(
+            alignment: Alignment.center,
+            height: size.height * 0.07,
+            width: size.width * 0.16,
+            decoration: BoxDecoration(
+                color: Colors.red[600],
+                borderRadius: BorderRadius.circular(10)),
+            child: Text(
+              data['companyUserName'][0].toString().toUpperCase(),
+              style: TextStyle(fontSize: 14.sp, color: Colors.white),
+            ),
+          )),
+    ]);
+  
+  }
+
+
 }

@@ -120,8 +120,8 @@ class _FormDataState extends State<FormData> {
                             Container(
                               alignment: Alignment.center,
                               child: Container(
-                                height: 150.0,
-                                width: 150.0,
+                                height: 120.0,
+                                width: 120.0,
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                         color: Colors.blue.shade900,
@@ -165,32 +165,34 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 5,
                             ),
-                            SizedBox(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextFormField(
-                                controller: firstName,
-                                cursorColor: Colors.black,
-                                textAlign: TextAlign.left,
-                                decoration: InputDecoration(
-                                  hintText: 'enter your name',
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: 1.0),
-                                  ),
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Enter First Name';
+                                }
+                                return null;
+                              },
+                              controller: firstName,
+                              minLines: 1,
+                              maxLines: 4,
+                              keyboardType: TextInputType.name,
+                              cursorColor: Colors.black,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: 1.0),
+                                ),
+                                // hintText: "Enter Phone Number",
                               ),
                             ),
+
                             SizedBox(
                               height: 10,
                             ),
@@ -204,32 +206,31 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 5,
                             ),
-                            SizedBox(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextFormField(
-                                controller: designation,
-                                keyboardType: TextInputType.name,
-                                cursorColor: Colors.black,
-                                textAlign: TextAlign.left,
-                                decoration: InputDecoration(
-                                  hintText: 'enter your designation',
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: 1.0),
-                                  ),
-                                  // hintText: "Enter Phone Number",
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Enter Designation';
+                                }
+                                return null;
+                              },
+                              controller: designation,
+                              minLines: 1,
+                              maxLines: 4,
+                              keyboardType: TextInputType.text,
+                              cursorColor: Colors.black,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: 1.0),
+                                ),
+                                // hintText: "Enter Phone Number",
                               ),
                             ),
                             SizedBox(
@@ -245,32 +246,31 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 5,
                             ),
-                            SizedBox(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextFormField(
-                                controller: residing,
-                                keyboardType: TextInputType.name,
-                                cursorColor: Colors.black,
-                                textAlign: TextAlign.left,
-                                decoration: InputDecoration(
-                                  hintText: 'enter your residing',
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: 1.0),
-                                  ),
-                                  // hintText: "Enter Phone Number",
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Enter Residing';
+                                }
+                                return null;
+                              },
+                              controller: residing,
+                              minLines: 1,
+                              maxLines: 4,
+                              keyboardType: TextInputType.text,
+                              cursorColor: Colors.black,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: 1.0),
+                                ),
+                                // hintText: "Enter Phone Number",
                               ),
                             ),
                             SizedBox(
@@ -286,32 +286,31 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 5,
                             ),
-                            SizedBox(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextFormField(
-                                controller: email,
-                                keyboardType: TextInputType.name,
-                                cursorColor: Colors.black,
-                                textAlign: TextAlign.left,
-                                decoration: InputDecoration(
-                                  hintText: 'enter your email',
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: 1.0),
-                                  ),
-                                  // hintText: "Enter Phone Number",
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Enter Email';
+                                }
+                                return null;
+                              },
+                              controller: email,
+                              minLines: 1,
+                              maxLines: 4,
+                              keyboardType: TextInputType.emailAddress,
+                              cursorColor: Colors.black,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: 1.0),
+                                ),
+                                // hintText: "Enter Phone Number",
                               ),
                             ),
                             SizedBox(
@@ -327,31 +326,31 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 5,
                             ),
-                            SizedBox(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextFormField(
-                                controller: phoneno,
-                                keyboardType: TextInputType.number,
-                                cursorColor: Colors.black,
-                                textAlign: TextAlign.left,
-                                decoration: InputDecoration(
-                                  hintText: 'enter your number',
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: 1.0),
-                                  ),
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Enter Phone Number';
+                                }
+                                return null;
+                              },
+                              controller: phoneno,
+                              minLines: 1,
+                              maxLines: 4,
+                              keyboardType: TextInputType.phone,
+                              cursorColor: Colors.black,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter number';
-                                  }
-                                  return null;
-                                },
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: 1.0),
+                                ),
+                                // hintText: "Enter Phone Number",
                               ),
                             ),
                             SizedBox(
@@ -367,31 +366,32 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 5,
                             ),
-                            SizedBox(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextFormField(
-                                controller: linkedin,
-                                keyboardType: TextInputType.name,
-                                cursorColor: Colors.black,
-                                textAlign: TextAlign.left,
-                                decoration: InputDecoration(
-                                  hintText: 'enter your account link',
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: 1.0),
-                                  ),
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Enter LinkedIn Address';
+                                }
+                                return null;
+                              },
+                              controller: linkedin,
+                              minLines: 1,
+                              maxLines: 4,
+                              keyboardType: TextInputType.text,
+                              cursorColor: Colors.black,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                hintText: "https://",
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: 1.0),
+                                ),
+                                // hintText: "Enter Phone Number",
                               ),
                             ),
                             SizedBox(
@@ -602,6 +602,9 @@ class _FormDataState extends State<FormData> {
                                                   AddCertificate(
                                                       addcertificate)),
                                         );
+                                        setState(() {
+                                          
+                                        });
                                       },
                                       icon: Icon(
                                         Icons.add,
@@ -707,6 +710,9 @@ class _FormDataState extends State<FormData> {
                                               builder: (context) =>
                                                   AddExperience(addExperince)),
                                         );
+                                        setState(() {
+                                          
+                                        });
                                       },
                                       icon: Icon(
                                         Icons.add,
@@ -813,6 +819,9 @@ class _FormDataState extends State<FormData> {
                                               builder: (context) =>
                                                   AddProject(addProject)),
                                         );
+                                        setState(() {
+                                          
+                                        });
                                       },
                                       icon: Icon(
                                         Icons.add,
@@ -917,6 +926,9 @@ class _FormDataState extends State<FormData> {
                                               builder: (context) =>
                                                   AddSkills(addskills)),
                                         );
+                                        setState(() {
+                                          
+                                        });
                                       },
                                       icon: Icon(
                                         Icons.add,
@@ -939,33 +951,31 @@ class _FormDataState extends State<FormData> {
                             SizedBox(
                               height: 5,
                             ),
-                            SizedBox(
-                              height: 80,
-                              width: MediaQuery.of(context).size.width / 1.1,
-                              child: TextFormField(
-                                maxLines: 3,
-                                controller: personal,
-                                keyboardType: TextInputType.name,
-                                cursorColor: Colors.black,
-                                textAlign: TextAlign.left,
-                                decoration: InputDecoration(
-                                  hintText: 'enter personal informations',
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: 1.0),
-                                  ),
-                                  // hintText: "Enter Phone Number",
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Enter Personal Info.';
+                                }
+                                return null;
+                              },
+                              controller: personal,
+                              minLines: 3,
+                              maxLines: 6,
+                              keyboardType: TextInputType.text,
+                              cursorColor: Colors.black,
+                              textAlign: TextAlign.start,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: 1.0),
+                                ),
+                                // hintText: "Enter Phone Number",
                               ),
                             ),
                             SizedBox(
@@ -986,17 +996,59 @@ class _FormDataState extends State<FormData> {
                                   ),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
-                                      uploadImageFireStorage(imagePickedPath);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content: Text('Processing Data')),
-                                      );
+                                      if (addEdtion.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content:
+                                                    Text('Add Education')));
+                                      } else if (addcertificate.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content:
+                                                    Text('Add Certificate')));
+                                      } else if (addExperince.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content:
+                                                    Text('Add Experience')));
+                                      } else if (addProject.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text('Add Project')));
+                                      } else if (addskills.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text('Add Skills')));
+                                      } else {
+                                        if (addskills.isNotEmpty &&
+                                            addProject.isNotEmpty &&
+                                            addExperince.isNotEmpty &&
+                                            addcertificate.isNotEmpty &&
+                                            addEdtion.isNotEmpty) {
+                                              if(imagePickedPath != null){
+
+                                          uploadImageFireStorage(
+                                              imagePickedPath);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text('Sending CV! Please Wait.....')),
+                                          );
+                                              }
+                                              else{
+                                                 ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text('Add Image')),
+                                          );
+                                              }
+                                        }
+                                      }
                                     } else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
-                                            content: Text('Invaild Data')),
+                                            content: Text('Something Missing!')),
                                       );
                                     }
                                   },
@@ -1160,8 +1212,7 @@ class _FormDataState extends State<FormData> {
         "CandidateImage": "$downloadUrl"
       });
 
-
-       FirebaseFirestore.instance
+      FirebaseFirestore.instance
           .collection("users")
           .doc(Constants.appUser.userId)
           .collection("AppliedJobs")
@@ -1186,7 +1237,6 @@ class _FormDataState extends State<FormData> {
 
       Navigator.push(
           context, MaterialPageRoute(builder: (_) => SearchedList()));
-      
     }
   }
 }
