@@ -1,7 +1,9 @@
 // ignore_for_file: file_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_app/screen/Company%20Block/chat_message.dart';
 import 'package:firebase_app/screen/Company%20Block/check_details_and_cv.dart';
+import 'package:firebase_app/screen/home_screen/candidate_chat_message.dart';
 import 'package:firebase_app/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -53,7 +55,7 @@ class _AppliedJobsState extends State<AppliedJobs> {
                       QuerySnapshot data = snapshot.data as QuerySnapshot;
                       var dataList = data.docs;
                                          
-                        return dataList.isEmpty ? Text("No Applied Jobs"):  ListView.builder(
+                        return dataList.isEmpty ? Text("No Applied Jobs")  :  ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: dataList.isEmpty ? 0 : dataList.length,
@@ -88,8 +90,7 @@ class _AppliedJobsState extends State<AppliedJobs> {
   }
 
 CardsDetail(QueryDocumentSnapshot data){
-    return 
-              Container(
+    return   Container(
                 width: double.infinity,
                 child: InkWell(
                   onTap: () {
@@ -156,11 +157,15 @@ CardsDetail(QueryDocumentSnapshot data){
                             Container(
                               padding: EdgeInsets.all(20),
                               child: Center(
-                                child: Icon(
+                                child: IconButton(onPressed: (){
+                                  // print(data.get('CandidateData'));
+
+                                  Navigator.push(context, MaterialPageRoute(builder: (_)=> CandidateChatMessages(data: data,recieverMail: data.get("CandidateData")['companyEmail'],),),);
+                                }, icon: Icon(
                                   Icons.chat,
                                   size: 30,
                                   color: Colors.black45,
-                                ),
+                                ),),
                               ),
                             ),
                           ],

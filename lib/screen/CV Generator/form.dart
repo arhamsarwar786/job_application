@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/home_screen/jobscreen.dart';
@@ -12,12 +13,11 @@ import 'add_edcuation.dart';
 import 'add_experince.dart';
 import 'add_project.dart';
 import 'add_skills.dart';
-import 'pdf_page.dart';
 import 'package:flutter/material.dart';
 
 class FormData extends StatefulWidget {
-  final String companyID;
-  FormData(this.companyID);
+  final String companyID,companyEmail,companyUserName;
+  FormData(this.companyID,this.companyEmail,this.companyUserName);
 
   @override
   _FormDataState createState() => _FormDataState();
@@ -1189,16 +1189,21 @@ class _FormDataState extends State<FormData> {
     if (snapshot.state == TaskState.success) {
       downloadUrl = await snapshot.ref.getDownloadURL();
 
+
+        Random random = new Random();
+int ran1 = random.nextInt(100000);
+int ran2 = random.nextInt(100000);
+
       FirebaseFirestore.instance
           .collection("Companies")
           .doc(widget.companyID)
           .collection("ApplicationsRecevied")
-          .doc()
+          .doc(widget.companyID+ran1.toString()+ran2.toString())
           .set({
         "CandidateData": {
           "firstName": firstName.text,
           "designation": designation.text,
-          "residing": residing.text,
+          "residing": residing.text,  
           "email": email.text,
           "phoneno": phoneno.text,
           "linkedin": linkedin.text,
@@ -1208,6 +1213,10 @@ class _FormDataState extends State<FormData> {
           "skills": addskills,
           "certicate": addcertificate,
           "personal": personal.text,
+          "companyEmail":widget.companyEmail,
+          "companyID":widget.companyID,
+          "companyUserName":widget.companyUserName,
+          "emailAccount":Constants.appUser.email,
         },
         "CandidateImage": "$downloadUrl"
       });
@@ -1216,7 +1225,7 @@ class _FormDataState extends State<FormData> {
           .collection("users")
           .doc(Constants.appUser.userId)
           .collection("AppliedJobs")
-          .doc()
+          .doc(widget.companyID+ran1.toString()+ran2.toString())
           .set({
         "CandidateData": {
           "firstName": firstName.text,
@@ -1228,9 +1237,13 @@ class _FormDataState extends State<FormData> {
           "edcution": addEdtion,
           "experience": addExperince,
           "project": addProject,
-          "skills": addskills,
+          "skills": addskills, 
           "certicate": addcertificate,
           "personal": personal.text,
+          "companyEmail":widget.companyEmail,
+          "companyID":widget.companyID,
+          "companyUserName":widget.companyUserName,
+          "emailAccount":Constants.appUser.email,
         },
         "CandidateImage": "$downloadUrl"
       });

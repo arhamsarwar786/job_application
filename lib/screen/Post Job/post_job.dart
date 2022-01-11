@@ -36,13 +36,14 @@ int ran1 = random.nextInt(100000);
 int ran2 = random.nextInt(100000);
 
     // FirebaseFirestore.instance.collection("Companies").doc(Constants.appUser.userId).collection("jobPosts").doc().set({"title":title.text,"discription":disc.text,"timestamp": DateTime.now(),});
-   var s = FirebaseFirestore.instance.collection("AllJOBS").doc(Constants.appUser.userId+ran1.toString()+ran2.toString()).set({
+    FirebaseFirestore.instance.collection("AllJOBS").doc(Constants.appUser.userId+ran1.toString()+ran2.toString()).set({
       "title": title.text,
       "discription": disc.text,
       "timestamp": DateTime.now(),
       "city": city.text,
       "companyID": Constants.appUser.userId,
       "companyUserName": Constants.appUser.userName,
+      "companyEmail": Constants.appUser.email,
       "jobPostedId" :Constants.appUser.userId+ran1.toString()+ran2.toString(),
       "status":"active",
     });
@@ -55,6 +56,7 @@ int ran2 = random.nextInt(100000);
       "city": city.text,
       "companyID": Constants.appUser.userId,
       "companyUserName": Constants.appUser.userName,
+      "companyEmail": Constants.appUser.email,
       "jobPostedId" :Constants.appUser.userId+ran1.toString()+ran2.toString(),
       "status":"active",
     });

@@ -171,7 +171,7 @@ class JobDetails1 extends StatelessWidget {
                     minWidth: size.width,
                     height: size.height * 0.05,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=> FormData(data["companyID"]) ));
+                      Navigator.push(context, MaterialPageRoute(builder: (_)=> FormData(data["companyID"],data["companyEmail"],data['companyUserName'],),),);
                       // print(data.get("companyID"));
                     },
                     color: Colors.blue[900],

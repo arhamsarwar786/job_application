@@ -7,6 +7,8 @@ import 'package:firebase_app/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import 'chat_message.dart';
+
 class ApplicationsList extends StatefulWidget {  
 
   @override
@@ -54,7 +56,7 @@ class _ApplicationsListState extends State<ApplicationsList> {
                       QuerySnapshot data = snapshot.data as QuerySnapshot;
                       var dataList = data.docs;
                                          
-                        return  ListView.builder(
+                        return dataList.isEmpty ? Text("No Applications Recevied"):   ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: dataList.isEmpty ? 0 : dataList.length,
@@ -69,7 +71,7 @@ class _ApplicationsListState extends State<ApplicationsList> {
                       //     return Center(child: Text("NO"),);
                       // }
                       return Container(
-                        height: size.height,
+                        // height: size.height,
                         child: Center(child: CircularProgressIndicator()),
                       );
                     }),
@@ -157,11 +159,15 @@ CardsDetail(QueryDocumentSnapshot data){
                             Container(
                               padding: EdgeInsets.all(20),
                               child: Center(
-                                child: Icon(
+                                child: IconButton(
+                                  onPressed:(){
+                                    Navigator.push(context, MaterialPageRoute(builder: (_)=>ChatMessages(data: data,recieverMail: data.get('CandidateData')['emailAccount'],)));
+                                  },
+                                  icon:Icon(
                                   Icons.chat,
                                   size: 30,
                                   color: Colors.black45,
-                                ),
+                                ),),
                               ),
                             ),
                           ],
