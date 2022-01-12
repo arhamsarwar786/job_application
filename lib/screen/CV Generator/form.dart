@@ -122,7 +122,16 @@ class _FormDataState extends State<FormData> {
                               child: Container(
                                 height: 120.0,
                                 width: 120.0,
-                                decoration: BoxDecoration(
+                                decoration: imagePickedPath == "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"? BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.blue.shade900,
+                                        width: 1.0),
+                                    color: Colors.black38,
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image:
+                                            NetworkImage("$imagePickedPath"),
+                                        fit: BoxFit.cover)): BoxDecoration(
                                     border: Border.all(
                                         color: Colors.blue.shade900,
                                         width: 1.0),
@@ -131,12 +140,7 @@ class _FormDataState extends State<FormData> {
                                     image: DecorationImage(
                                         image:
                                             FileImage(File("$imagePickedPath")),
-                                        fit: BoxFit.cover)),
-                                // child: imagePickedPath == null
-                                //     ? CircularProgressIndicator(
-                                //         color: Colors.red,
-                                //       )
-                                //     :
+                                        fit: BoxFit.cover)),                          
                                 child: Align(
                                   alignment: Alignment.bottomRight,
                                   child: InkWell(
@@ -1115,7 +1119,7 @@ class _FormDataState extends State<FormData> {
         });
   }
 
-  dynamic imagePickedPath;
+  dynamic imagePickedPath = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
   final picker = ImagePicker();
 
   /// Method for sending a selected or taken photo to the DialogBox

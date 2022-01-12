@@ -122,7 +122,7 @@ CardsDetail(QueryDocumentSnapshot data){
                               child:  Padding(
                                 padding: EdgeInsets.fromLTRB(5, 8, 0, 0),
                                 child: Text(
-                                  data.get("CandidateData")["designation"],
+                                  data.get("CandidateData")["companyUserName"],
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 17,
@@ -138,7 +138,7 @@ CardsDetail(QueryDocumentSnapshot data){
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                 child: Text(
-                                  '${data.get("CandidateData")["residing"]}',
+                                  '${data.get("CandidateData")["designation"]}',
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   style: TextStyle(
@@ -150,25 +150,15 @@ CardsDetail(QueryDocumentSnapshot data){
                             ),
                           ],
                         ),
-                        Column(
-                          // crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.all(20),
-                              child: Center(
-                                child: IconButton(onPressed: (){
-                                  // print(data.get('CandidateData'));
-
-                                  Navigator.push(context, MaterialPageRoute(builder: (_)=> CandidateChatMessages(data: data,recieverMail: data.get("CandidateData")['companyEmail'],),),);
-                                }, icon: Icon(
-                                  Icons.chat,
-                                  size: 30,
-                                  color: Colors.black45,
-                                ),),
-                              ),
-                            ),
-                          ],
+                        Container(
+                          padding: EdgeInsets.only(right: 10),
+                          child: IconButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (_)=> CandidateChatMessages(data: data,recieverMail: data.get("CandidateData")['companyEmail'],),),);
+                          }, icon: Icon(
+                            Icons.chat,
+                            size: 30,
+                            color: Colors.black45,
+                          ),),
                         ),
                       ],
                     ),

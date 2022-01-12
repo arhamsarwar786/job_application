@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/Company%20Block/applications_list.dart';
 import 'package:firebase_app/screen/Company%20Block/check_details_and_cv.dart';
 import 'package:firebase_app/screen/home_screen/applied_jobs.dart';
 import 'package:firebase_app/screen/home_screen/home_screen.dart';
+import 'package:firebase_app/screen/home_screen/open_image.dart';
+import 'package:firebase_app/screen/home_screen/view_image.dart';
 import 'package:firebase_app/util/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,14 +33,80 @@ class _CandidateChatMessagesState extends State<CandidateChatMessages> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   String? Textt;
+  // dynamic storageImage;
   @override
   void initState() {
     super.initState();
 
     Messages();
+    // storageImage = fireStoreImage(widget.data);
   }
 
-  fireStoreImage storageImage = fireStoreImage();
+  ImagePicker picker = ImagePicker();
+
+  dialoge(context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.indigo[900],
+          elevation: 10,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+          title: Text(
+            'Select the file',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+            ),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  picker.pickImage(source: ImageSource.camera,imageQuality: 10).then((value) {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                ViewImage(value, widget.data, emailUser)));
+                  });
+
+                  // .then((value) =>
+                  // print("%%%%%%%%%%%%%%%%%%%%%%%%% $value")
+                  // // Navigator.push(context, MaterialPageRoute(builder: (_)=>ViewImage(value)))
+
+                  // );
+                  // // Navigator.pop(context);
+                },
+                icon: Icon(Icons.camera),
+                color: Colors.white),
+            IconButton(
+              onPressed: () {
+                picker.pickImage(source: ImageSource.gallery,imageQuality: 10).then((value) {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              ViewImage(value, widget.data, emailUser)));
+                });
+                // .then((value) =>
+
+                // //  Navigator.push(context, MaterialPageRoute(builder: (_)=>ViewImage(value)))
+                //  print(value)
+                //  );
+                // Navigator.pop(context);
+              },
+              icon: Icon(Icons.photo),
+              color: Colors.white,
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     emailUser = auth.currentUser!.email;
@@ -67,11 +136,10 @@ class _CandidateChatMessagesState extends State<CandidateChatMessages> {
                   MaterialPageRoute(builder: (_) => CheckDetails(widget.data)));
             },
             child: Container(
-              
               alignment: Alignment.centerLeft,
               height: 50,
               // color: Colors.red,
-              width: size.width * 0.70,
+              width: size.width * 0.65,
               child: Text(
                 widget.data.get('CandidateData')['companyUserName'],
                 maxLines: 1,
@@ -101,7 +169,7 @@ class _CandidateChatMessagesState extends State<CandidateChatMessages> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        storageImage.dialoge(context);
+                        dialoge(context);
                       },
                       // shape: CircleBorder(),
                       icon: Icon(
@@ -110,25 +178,25 @@ class _CandidateChatMessagesState extends State<CandidateChatMessages> {
                       ),
                       color: Colors.blue[900],
                     ),
-                    Container(                      
+                    Container(
                       height: 45,
                       width: size.width * 0.85,
                       decoration: BoxDecoration(
-                      color: Colors.white,
-                        borderRadius: BorderRadius.circular(30)
-                      ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30)),
                       child: TextField(
                         onChanged: (val) {
                           Textt = val;
                         },
-                         minLines: 1,
-                            maxLines: 4,
-                            keyboardType: TextInputType.text,
-                            cursorColor: Colors.black,
-                            textAlign: TextAlign.start,
+                        minLines: 1,
+                        maxLines: 4,
+                        keyboardType: TextInputType.text,
+                        cursorColor: Colors.black,
+                        textAlign: TextAlign.start,
                         decoration: InputDecoration(
                           isDense: true,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 2),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 2),
                           suffixIcon: IconButton(
                             color: Colors.blue[900],
                             onPressed: () async {
@@ -148,22 +216,21 @@ class _CandidateChatMessagesState extends State<CandidateChatMessages> {
                                       .collection("chat")
                                       .add({
                                     'message': Textt,
-                                    'image_path':
-                                        storageImage.imageDataFromStorage ?? "",
+                                    'image_path': "",
                                     'email': emailUser,
                                     'time': DateTime.now(),
                                   }).then((value) {
-                                    storageImage.imageDataFromStorage = '';
+                                    // storageImage.imageDataFromStorage = '';
                                     Messages();
                                     textController.clear();
                                     Textt = "";
                                     setState(() {});
                                   });
-                                }                                
+                                }
                               } catch (e) {
                                 print(e);
                               }
-                            },                            
+                            },
                             icon: Icon(
                               Icons.send,
                               color: Colors.orange.shade500,
@@ -205,12 +272,12 @@ class _MessagesState extends State<Messages> {
     var email;
     var time;
     final size = MediaQuery.of(context).size;
-    final List<DocumentSnapshot> documents;
+    // final List<DocumentSnapshot> documents;
     List imgLink = [];
     List messagesDataUsed = [];
     List Mails = [];
     List times = [];
-    fireStoreImage storageImage = fireStoreImage();
+    // fireStoreImage storageImage = fireStoreImage(widget.data);
     return StreamBuilder<QuerySnapshot>(
       stream: firestore
           .collection("Companies")
@@ -236,32 +303,32 @@ class _MessagesState extends State<Messages> {
               var time = e['time'];
               // if (Data != "") {
               messagesDataUsed.add(Data);
-              imgLink.add(time);
+              imgLink.add(image);
               Mails.add(email);
               times.add(time);
               // }
-              if ((image == storageImage.selectedImage) || (image != '')) {
-                messagesDataUsed.add(image);
-                imgLink.add(image);
-                Mails.add(email);
-                times.add(time);
-              }
+              // if ((image == storageImage.selectedImage) || (image != '')) {
+              //   messagesDataUsed.add(image);
+              //   imgLink.add(image);
+              //   Mails.add(email);
+              //   times.add(time);
+              // }
             } else if (email == widget.recieverMail) {
               var Data1 = e['message'];
               var image1 = e['image_path'];
               var time = e['time'];
               // if (Data1 != '') {
               messagesDataUsed.add(Data1);
-              imgLink.add(time);
+              imgLink.add(image1);
               Mails.add(email);
               times.add(time);
               // }
-              if ((image1 == storageImage.selectedImage) || (image1 != '')) {
-                messagesDataUsed.add(image1);
-                imgLink.add(image1);
-                Mails.add(email);
-                times.add(time);
-              }
+              // if ((image1 == storageImage.selectedImage) || (image1 != '')) {
+              //   messagesDataUsed.add(image1);
+              //   imgLink.add(image1);
+              //   Mails.add(email);
+              //   times.add(time);
+              // }
             }
           }).toList();
 
@@ -285,7 +352,7 @@ class _MessagesState extends State<Messages> {
                   children: [
                     Mails[index] != widget.recieverMail
                         ? Container(
-                            width: size.width*0.70,
+                            width: size.width * 0.65,
                             // height: size.height*0.05,
                             padding: const EdgeInsets.all(10),
                             // width: size.width / 2,
@@ -298,19 +365,17 @@ class _MessagesState extends State<Messages> {
                                 topRight: Radius.circular(30),
                               ),
                             ),
-                            child: messagesDataUsed[index] != imgLink[index]
+                            child: messagesDataUsed[index].isNotEmpty
                                 ? Column(
-                                  children: [
-                                    Text(
+                                    children: [
+                                      Text(
                                         messagesDataUsed[index].toString(),
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
                                         ),
                                       ),
-
-
-                                        Container(
+                                      Container(
                                         alignment: Alignment.bottomRight,
                                         child: Text(
                                           DateFormat('jm')
@@ -321,19 +386,25 @@ class _MessagesState extends State<Messages> {
                                           ),
                                         ),
                                       ),
-                                  ],
-                                )
-                                : SizedBox(
-                                    height: size.height * 0.2,
-                                    child: Image(
-                                      image: NetworkImage(
-                                          messagesDataUsed[index].toString()),
-                                      fit: BoxFit.fill,
+                                    ],
+                                  )
+                                : InkWell(
+                                       onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (_)=> OpenImage(imgLink[index]) ));
+                                  },
+                                  child: SizedBox(
+                                      height: size.height * 0.2,
+                                      width: size.width * 0.65,
+                                      child: Image(
+                                        image: NetworkImage(
+                                            imgLink[index]),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
+                                ),
                           )
                         : Container(
-                          width: size.width*0.70,
+                            width: size.width * 0.65,
                             padding: const EdgeInsets.all(10),
                             alignment: Alignment.center,
                             decoration: const BoxDecoration(
@@ -344,18 +415,17 @@ class _MessagesState extends State<Messages> {
                                 bottomRight: Radius.circular(30),
                               ),
                             ),
-                            child: messagesDataUsed[index] != imgLink[index]
+                            child: messagesDataUsed[index].isNotEmpty
                                 ? Column(
-                                  children: [
-                                    Text(
+                                    children: [
+                                      Text(
                                         messagesDataUsed[index].toString(),
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
                                         ),
                                       ),
-
-                                        Container(
+                                      Container(
                                         alignment: Alignment.bottomLeft,
                                         child: Text(
                                           DateFormat('jm')
@@ -366,16 +436,22 @@ class _MessagesState extends State<Messages> {
                                           ),
                                         ),
                                       ),
-                                  ],
-                                )
-                                : SizedBox(
-                                    height: size.height * 0.2,
-                                    child: Image(
-                                      image: NetworkImage(
-                                          messagesDataUsed[index].toString()),
-                                      fit: BoxFit.fill,
+                                    ],
+                                  )
+                                : InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (_)=> OpenImage(imgLink[index]) ));
+                                  },
+                                  child: SizedBox(
+                                      height: size.height * 0.2,
+                                      width: size.width * 0.65,
+                                      child: Image(
+                                        image: NetworkImage(
+                                            imgLink[index]),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
+                                ),
                           ),
                   ],
                 ),
@@ -386,88 +462,59 @@ class _MessagesState extends State<Messages> {
   }
 }
 
-class fireStoreImage {
-  dynamic selectedImage;
-  final picker = ImagePicker();
+// class fireStoreImage {
+//   final data;
+//   fireStoreImage(this.data);
+//   dynamic selectedImage;
+//   final picker = ImagePicker();
 
-  Future selectImageFromCamra() async {
-    await picker.pickImage(source: ImageSource.camera).then((value) {
-      selectedImage = value!.path;
-    });
-  }
+//   Future selectImageFromCamra(context) async {
+//      picker.pickImage(source: ImageSource.camera).then((value) {
+//        Navigator.pop(context);
+//        Navigator.push(context, MaterialPageRoute(builder: (_)=>ViewImage(value,data)));
+//     });
 
-  Future selectImageFromGallery() async {
-    await picker.pickImage(source: ImageSource.gallery).then((value) {
-      selectedImage = value!.path;
-    });
-  }
+//   }
 
-  Future sndPictureFireStorage() async {
-    if (selectedImage != null) {
-      Reference reference = FirebaseStorage.instance.ref().child("chat/");
-      UploadTask uploadTask = reference.putFile(File(selectedImage));
+//   Future selectImageFromGallery(context) async {
+//     await picker.pickImage(source: ImageSource.gallery).then((value) {
+//       Navigator.pop(context);
+//       Navigator.push(context, MaterialPageRoute(builder: (_)=>ViewImage(value,data))) ;
+//     });
+//   }
 
-      await uploadTask.then((pra) {
-        getPicFromStorage();
-        print("recieve image is $imageDataFromStorage");
+  // Future sndPictureFireStorage() async {
+  //   if (selectedImage != null) {
+  //     Random random = new Random();
+  //     int ran1 = random.nextInt(100000);
+  //     int ran2 = random.nextInt(100000);
+  //     TaskSnapshot reference =await FirebaseStorage.instance.ref().child(
+  //         "chat${Constants.appUser.userId + ran1.toString() + ran2.toString()}").putFile(File(selectedImage));
+  //     // UploadTask uploadTask = reference.putFile(File(selectedImage));
 
-        print("snd image is $selectedImage");
-      });
-    }
-  }
+  //     if (reference.state == TaskState.success) {
+  //         var downloadUrl = await reference.ref.getDownloadURL();
+  //         print(downloadUrl);
+  //     }
 
-  dialoge(context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.indigo[900],
-          elevation: 10,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-          title: Text(
-            'Select the file',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-            ),
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  selectImageFromCamra()
-                      .then((value) => sndPictureFireStorage());
-                },
-                icon: Icon(Icons.camera),
-                color: Colors.white),
-            IconButton(
-              onPressed: () {
-                selectImageFromGallery()
-                    .then((value) => sndPictureFireStorage());
-              },
-              icon: Icon(Icons.photo),
-              color: Colors.white,
-            )
-          ],
-        );
-      },
-    );
-  }
+  //     // await uploadTask.then((pra) {
+  //     //   getPicFromStorage();
+  //     //   print("recieve image is $imageDataFromStorage");
+  //     //   print("snd image is $selectedImage");
+  //     // });
+  //   }
+  // }
 
-  dynamic imageDataFromStorage;
-  Future getPicFromStorage() async {
-    Reference reference = FirebaseStorage.instance.ref().child("chat");
-    Future task = reference.getDownloadURL();
-    return await task.then((data) {
-      imageDataFromStorage = data;
-      selectedImage = imageDataFromStorage;
-    });
-  }
-}
-
-
-
-
+//    dynamic imageDataFromStorage;
+//   Future getPicFromStorage() async {
+//     Reference reference = FirebaseStorage.instance.ref().child("chat");
+//     Future task = reference.getDownloadURL();
+//     return await task.then((data) {
+//       imageDataFromStorage = data;
+//       selectedImage = imageDataFromStorage;
+//     });
+//   }
+// }
 
 //  body: Container(
 //         height: size.height,
@@ -493,7 +540,7 @@ class fireStoreImage {
 //                 ),
 //               ),
 //             ),
-//             Align(alignment: Alignment.bottomCenter,child: 
+//             Align(alignment: Alignment.bottomCenter,child:
 //                Row(
 //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -562,8 +609,7 @@ class fireStoreImage {
 //                   ],
 //                 ),
 //           ),
-          
-          
+
 //           ],
 //         ),
 //       ),

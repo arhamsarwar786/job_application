@@ -116,61 +116,57 @@ CardsDetail(QueryDocumentSnapshot data){
                             backgroundImage: NetworkImage("${data.get("CandidateImage")}"),
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child:  Padding(
-                                padding: EdgeInsets.fromLTRB(5, 8, 0, 0),
-                                child: Text(
-                                  data.get("CandidateData")["firstName"],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 17,
-                                      color: Colors.black54),
+                        Container(
+                          
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                child:  Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 8, 0, 0),
+                                  child: Text(
+                                    data.get("CandidateData")["firstName"],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17,
+                                        color: Colors.black54),
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                child: Text(
-                                  '${data.get("CandidateData")["designation"]}',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: Colors.grey),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                  child: Text(
+                                    '${data.get("CandidateData")["designation"]}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12,
+                                        color: Colors.grey),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                        Column(
-                          // crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.all(20),
-                              child: Center(
-                                child: IconButton(
-                                  onPressed:(){
-                                    Navigator.push(context, MaterialPageRoute(builder: (_)=>ChatMessages(data: data,recieverMail: data.get('CandidateData')['emailAccount'],)));
-                                  },
-                                  icon:Icon(
-                                  Icons.chat,
-                                  size: 30,
-                                  color: Colors.black45,
-                                ),),
-                              ),
-                            ),
-                          ],
+                        Container(
+                          padding: EdgeInsets.only(right: 10, ),
+                          child: IconButton(
+                            onPressed:(){
+                              Navigator.push(context, MaterialPageRoute(builder: (_)=>ChatMessages(data: data,recieverMail: data.get('CandidateData')['emailAccount'],)));
+                            },
+                            icon:Icon(
+                            Icons.chat,
+                            size: 30,
+                            color: Colors.black45,
+                          ),),
                         ),
                       ],
                     ),

@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:firebase_app/screen/Company%20Block/view_image_admin.dart';
+import 'package:firebase_app/screen/home_screen/open_image.dart';
+import 'package:firebase_app/screen/home_screen/view_image.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/screen/Company%20Block/applications_list.dart';
@@ -35,7 +38,75 @@ class _ChatMessagesState extends State<ChatMessages> {
     // emailUser = widget.data.get('CandidateData')['email'];
   }
 
-  fireStoreImage storageImage = fireStoreImage();
+
+
+
+  ImagePicker picker = ImagePicker();
+
+  dialoge(context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.indigo[900],
+          elevation: 10,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+          title: Text(
+            'Select the file',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+            ),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  picker.pickImage(source: ImageSource.camera,imageQuality: 10).then((value) {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                ViewImageAdmin(value, widget.data, emailUser)));
+                  });
+
+                  // .then((value) =>
+                  // print("%%%%%%%%%%%%%%%%%%%%%%%%% $value")
+                  // // Navigator.push(context, MaterialPageRoute(builder: (_)=>ViewImage(value)))
+
+                  // );
+                  // // Navigator.pop(context);
+                },
+                icon: Icon(Icons.camera),
+                color: Colors.white),
+            IconButton(
+              onPressed: () {
+                picker.pickImage(source: ImageSource.gallery,imageQuality: 10).then((value) {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              ViewImageAdmin(value, widget.data, emailUser)));
+                });
+                // .then((value) =>
+
+                // //  Navigator.push(context, MaterialPageRoute(builder: (_)=>ViewImage(value)))
+                //  print(value)
+                //  );
+                // Navigator.pop(context);
+              },
+              icon: Icon(Icons.photo),
+              color: Colors.white,
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  // fireStoreImage storageImage = fireStoreImage();
   @override
   Widget build(BuildContext context) {
     // print("this is mail ${widget.recieverMail}");
@@ -107,7 +178,7 @@ class _ChatMessagesState extends State<ChatMessages> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      storageImage.dialoge(context);
+                      dialoge(context);
                     },
                     // shape: CircleBorder(),
                     icon: Icon(
@@ -154,11 +225,11 @@ class _ChatMessagesState extends State<ChatMessages> {
                                     .add({
                                   'message': Textt,
                                   'image_path':
-                                      storageImage.imageDataFromStorage ?? "",
+                                      "",
                                   'email': emailUser,
                                   'time': DateTime.now(),
                                 }).then((value) {
-                                  storageImage.imageDataFromStorage = '';
+                                  
                                   Messages();
                                   textController.clear();
                                   Textt = "";
@@ -213,7 +284,7 @@ class _MessagesState extends State<Messages> {
     List messagesDataUsed = [];
     List Mails = [];
     List times = [];
-    fireStoreImage storageImage = fireStoreImage();
+    // fireStoreImage storageImage = fireStoreImage();
     return StreamBuilder<QuerySnapshot>(
       stream: firestore
           .collection("Companies")
@@ -240,17 +311,17 @@ class _MessagesState extends State<Messages> {
               var time = e['time'];
               // if (Data != "") {
               messagesDataUsed.add(Data);
-              imgLink.add(time);
+              imgLink.add(image);
               Mails.add(email);
               times.add(time);
               // }
               print(messagesDataUsed.length);
-              if ((image == storageImage.selectedImage) || (image != '')) {
-                messagesDataUsed.add(image);
-                imgLink.add(image);
-                Mails.add(email);
-                times.add(time);
-              }
+              // if ((image == storageImage.selectedImage) || (image != '')) {
+              //   messagesDataUsed.add(image);
+              //   imgLink.add(image);
+              //   Mails.add(email);
+              //   times.add(time);
+              // }
             } else if (email == widget.recieverMail) {
               print("Matched");
               var Data1 = e['message'];
@@ -258,16 +329,16 @@ class _MessagesState extends State<Messages> {
               var time = e['time'];
               // if (Data1 != '') {
               messagesDataUsed.add(Data1);
-              imgLink.add(time);
+              imgLink.add(image1);
               Mails.add(email);
               times.add(time);
               // }
-              if ((image1 == storageImage.selectedImage) || (image1 != '')) {
-                messagesDataUsed.add(image1);
-                imgLink.add(image1);
-                Mails.add(email);
-                times.add(time);
-              }
+              // if ((image1 == storageImage.selectedImage) || (image1 != '')) {
+              //   messagesDataUsed.add(image1);
+              //   imgLink.add(image1);
+              //   Mails.add(email);
+              //   times.add(time);
+              // }
             }
           }).toList();
 
@@ -292,7 +363,7 @@ class _MessagesState extends State<Messages> {
                   children: [
                     Mails[index] != widget.recieverMail
                         ? Container(
-                            width: size.width * 0.70,
+                            width: size.width * 0.65,
                             // height: size.height*0.05,
                             padding: const EdgeInsets.all(10),
                             // width: size.width / 2,
@@ -305,7 +376,7 @@ class _MessagesState extends State<Messages> {
                                 topRight: Radius.circular(30),
                               ),
                             ),
-                            child: messagesDataUsed[index] != imgLink[index]
+                            child: messagesDataUsed[index].isNotEmpty
                                 ? Column(
                                     children: [
                                       Text(
@@ -328,17 +399,23 @@ class _MessagesState extends State<Messages> {
                                       ),
                                     ],
                                   )
-                                : SizedBox(
-                                    height: size.height * 0.2,
-                                    child: Image(
+                                : InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (_)=> OpenImage(imgLink[index]) ));
+                                  },
+                                  child: SizedBox(
+                                    width: size.width * 0.65,
+                                      height: size.height * 0.2,
+                                      child: Image(
                                       image: NetworkImage(
-                                          messagesDataUsed[index].toString()),
-                                      fit: BoxFit.fill,
+                                            imgLink[index]),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
+                                ),
                           )
                         : Container(
-                            width: size.width * 0.70,
+                            width: size.width * 0.65,
                             padding: const EdgeInsets.all(10),
                             alignment: Alignment.center,
                             decoration: const BoxDecoration(
@@ -349,7 +426,7 @@ class _MessagesState extends State<Messages> {
                                 bottomRight: Radius.circular(30),
                               ),
                             ),
-                            child: messagesDataUsed[index] != imgLink[index]
+                            child: messagesDataUsed[index].isNotEmpty
                                 ? Column(
                                     children: [
                                       Text(
@@ -372,14 +449,20 @@ class _MessagesState extends State<Messages> {
                                       ),
                                     ],
                                   )
-                                : SizedBox(
-                                    height: size.height * 0.2,
-                                    child: Image(
+                                : InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (_)=> OpenImage(imgLink[index]) ));
+                                  },
+                                  child: SizedBox(
+                                    width: size.width * 0.65,
+                                      height: size.height * 0.2,
+                                      child: Image(
                                       image: NetworkImage(
-                                          messagesDataUsed[index].toString()),
-                                      fit: BoxFit.fill,
+                                            imgLink[index]),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
+                                ),
                           ),
                   ],
                 ),
@@ -390,84 +473,84 @@ class _MessagesState extends State<Messages> {
   }
 }
 
-class fireStoreImage {
-  dynamic selectedImage;
-  final picker = ImagePicker();
+// class fireStoreImage {
+//   dynamic selectedImage;
+//   final picker = ImagePicker();
 
-  Future selectImageFromCamra() async {
-    await picker.pickImage(source: ImageSource.camera).then((value) {
-      selectedImage = value!.path;
-    });
-  }
+//   Future selectImageFromCamra() async {
+//     await picker.pickImage(source: ImageSource.camera).then((value) {
+//       selectedImage = value!.path;
+//     });
+//   }
 
-  Future selectImageFromGallery() async {
-    await picker.pickImage(source: ImageSource.gallery).then((value) {
-      selectedImage = value!.path;
-    });
-  }
+//   Future selectImageFromGallery() async {
+//     await picker.pickImage(source: ImageSource.gallery).then((value) {
+//       selectedImage = value!.path;
+//     });
+//   }
 
-  Future sndPictureFireStorage() async {
-    if (selectedImage != null) {
-      Reference reference = FirebaseStorage.instance.ref().child("chat/");
-      UploadTask uploadTask = reference.putFile(File(selectedImage));
+//   Future sndPictureFireStorage() async {
+//     if (selectedImage != null) {
+//       Reference reference = FirebaseStorage.instance.ref().child("chat/");
+//       UploadTask uploadTask = reference.putFile(File(selectedImage));
 
-      await uploadTask.then((pra) {
-        getPicFromStorage();
-        print("recieve image is $imageDataFromStorage");
+//       await uploadTask.then((pra) {
+//         getPicFromStorage();
+//         print("recieve image is $imageDataFromStorage");
 
-        print("snd image is $selectedImage");
-      });
-    }
-  }
+//         print("snd image is $selectedImage");
+//       });
+//     }
+//   }
 
-  dialoge(context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.indigo[900],
-          elevation: 10,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-          title: Text(
-            'Select the file',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-            ),
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  selectImageFromCamra()
-                      .then((value) => sndPictureFireStorage());
-                },
-                icon: Icon(Icons.camera),
-                color: Colors.white),
-            IconButton(
-              onPressed: () {
-                selectImageFromGallery()
-                    .then((value) => sndPictureFireStorage());
-              },
-              icon: Icon(Icons.photo),
-              color: Colors.white,
-            )
-          ],
-        );
-      },
-    );
-  }
+//   dialoge(context) {
+//     return showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return AlertDialog(
+//           backgroundColor: Colors.indigo[900],
+//           elevation: 10,
+//           shape:
+//               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+//           title: Text(
+//             'Select the file',
+//             style: TextStyle(
+//               fontSize: 18,
+//               color: Colors.white,
+//             ),
+//           ),
+//           actions: [
+//             IconButton(
+//                 onPressed: () {
+//                   selectImageFromCamra()
+//                       .then((value) => sndPictureFireStorage());
+//                 },
+//                 icon: Icon(Icons.camera),
+//                 color: Colors.white),
+//             IconButton(
+//               onPressed: () {
+//                 selectImageFromGallery()
+//                     .then((value) => sndPictureFireStorage());
+//               },
+//               icon: Icon(Icons.photo),
+//               color: Colors.white,
+//             )
+//           ],
+//         );
+//       },
+//     );
+//   }
 
-  dynamic imageDataFromStorage;
-  Future getPicFromStorage() async {
-    Reference reference = FirebaseStorage.instance.ref().child("chat");
-    Future task = reference.getDownloadURL();
-    return await task.then((data) {
-      imageDataFromStorage = data;
-      selectedImage = imageDataFromStorage;
-    });
-  }
-}
+//   dynamic imageDataFromStorage;
+//   Future getPicFromStorage() async {
+//     Reference reference = FirebaseStorage.instance.ref().child("chat");
+//     Future task = reference.getDownloadURL();
+//     return await task.then((data) {
+//       imageDataFromStorage = data;
+//       selectedImage = imageDataFromStorage;
+//     });
+//   }
+// }
 
 
 

@@ -19,6 +19,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sizer/sizer.dart';
 
+import 'chat_message.dart';
 import 'check_details_and_cv.dart';
 
 class CompanyLanding extends StatefulWidget {
@@ -387,21 +388,18 @@ class _CompanyLandingState extends State<CompanyLanding> {
                   ),
                 ],
               ),
-              Column(
-                // crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: Center(
-                      child: Icon(
-                        Icons.chat,
-                        size: 30,
-                        color: Colors.black45,
-                      ),
-                    ),
+              Container(
+                padding: EdgeInsets.only(right: 10),
+                child: IconButton(
+                   onPressed:(){
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>ChatMessages(data: data,recieverMail: data.get('CandidateData')['emailAccount'],)));
+                      },
+                  icon: Icon(
+                    Icons.chat,
+                    size: 30,
+                    color: Colors.black45,
                   ),
-                ],
+                ),
               ),
             ],
           ),
