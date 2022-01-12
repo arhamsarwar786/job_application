@@ -156,6 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           MaterialPageRoute(builder: (context) => SearchedList(searchData.text)),
                         );
+                        
                       },
                       child: Text("Find Jobs",
                           style: TextStyle(
@@ -233,6 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             onTap: () {
+
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SearchedList()),

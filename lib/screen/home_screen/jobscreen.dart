@@ -19,7 +19,7 @@ import 'jobdetailscreen.dart';
 import 'jobdetailscreen1.dart';
 
 class SearchedList extends StatefulWidget {
-  final query;
+  var query;
   SearchedList([this.query]);
 
   @override
@@ -127,8 +127,35 @@ class _SearchedListState extends State<SearchedList> {
                           if(widget.query.isNotEmpty){
                            dataList =  filterData(dataList);                            
                           }
-                        }                        
-                        return  ListView.builder(
+                        }  
+                        print(dataList.isEmpty)                      ;
+                        return dataList.isEmpty ? Container(
+                          height: MediaQuery.of(context).size.height-50.0,
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+
+                              Text("No Result Found!",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                              SizedBox(
+                                width:10,
+                              ),
+                              Container(
+                                decoration:BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: Colors.blue[900]
+                                ),
+                                child: IconButton(
+                                  color: Colors.white,
+                                  onPressed: (){
+                                   widget.query = null;
+                                  setState(() {
+                                    
+                                  });
+                                }, icon: Icon(Icons.refresh)),
+                              )
+                            ],
+                          )):  ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: dataList.isEmpty ? 0 : dataList.length,
